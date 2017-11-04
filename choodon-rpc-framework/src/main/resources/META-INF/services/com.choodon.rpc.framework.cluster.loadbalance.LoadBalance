@@ -1,0 +1,2 @@
+com.choodon.rpc.framework.cluster.loadbalance.support.RandomLoadBalance
+com.choodon.rpc.framework.cluster.loadbalance.support.RoundRobinLoadBalance

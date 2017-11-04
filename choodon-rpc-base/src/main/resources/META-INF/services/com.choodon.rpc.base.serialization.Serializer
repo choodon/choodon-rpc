@@ -1,0 +1,3 @@
+com.choodon.rpc.base.serialization.fastjson.FastjsonSerializer
+com.choodon.rpc.base.serialization.kryo.KryoSerializer
+com.choodon.rpc.base.serialization.protostuff.ProtoStuffSerializer
