@@ -59,18 +59,31 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
             case HEADER_BODY_LENGTH:
                 header.setBodyLength(in.readInt()); // 消息体长度
                 checkpoint(State.BODY);
-            case BODY:
+            case BODY: {
                 switch (header.getMessageCode()) {
-                    case ProtocolHeader.HEARTBEAT_PING:
+                    case ProtocolHeader.HEARTBEAT_PING: {
+                        int length = checkBodyLength(header.getBodyLength());
+                        byte[] bytes = new byte[length];
+                        in.readBytes(bytes);
                         HeartBeatPing ping = new HeartBeatPing(header.getId());
-                        ping.setSerializer(RPCConstants.DEFAULT_SERIALIZATION);
+                        String serializationType = SerializationEnum.valueOf("serialization" + header.getSerializerCode()).getValue()
+                                .toString();
+                        ping.setSerializer(serializationType);
+                        ping.setBytes(bytes);
                         out.add(ping);
                         break;
-                    case ProtocolHeader.HEARTBEAT_PONG:
+                    }
+                    case ProtocolHeader.HEARTBEAT_PONG: {
+                        int length = checkBodyLength(header.getBodyLength());
+                        byte[] bytes = new byte[length];
+                        in.readBytes(bytes);
                         HeartBeatPong pong = new HeartBeatPong(header.getId());
-                        pong.setSerializer(RPCConstants.DEFAULT_SERIALIZATION);
-                        out.add(new HeartBeatPong(header.getId()));
+                        String serializationType = SerializationEnum.valueOf("serialization" + header.getSerializerCode()).getValue()
+                                .toString();
+                        pong.setSerializer(serializationType);
+                        out.add(pong);
                         break;
+                    }
                     case ProtocolHeader.REQUEST: {
                         int length = checkBodyLength(header.getBodyLength());
                         byte[] bytes = new byte[length];
@@ -99,9 +112,12 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
                         break;
                     }
                     default:
-                        throw new RPCFrameworkException("ILLEGAL_PASS");
+                        throw new RPCFrameworkException("ILLEGAL_MSGTYPE");
                 }
-                checkpoint(State.HEADER_PASS);
+            }
+            checkpoint(State.HEADER_PASS);
+            break;
+            default:  throw new RPCFrameworkException("ILLEGAL PACKET");
         }
     }
 

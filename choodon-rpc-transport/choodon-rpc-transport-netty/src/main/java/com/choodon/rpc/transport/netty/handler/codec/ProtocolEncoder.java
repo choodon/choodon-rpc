@@ -50,16 +50,20 @@ public class ProtocolEncoder extends MessageToByteEncoder<Holder> {
     }
 
     private void doEncodeHeartBeatPing(HeartBeatPing heartBeatPing, ByteBuf out) {
-        byte serializerCode = (byte) SerializationEnum.valueOf(RPCConstants.DEFAULT_SERIALIZATION).getValue();
+        byte serializerCode = (byte) SerializationEnum.valueOf(heartBeatPing.getSerializer()).getValue();
         byte sign = (byte) ((serializerCode << 4) + ProtocolHeader.HEARTBEAT_PING);
         long invokeId = heartBeatPing.getId();
-        out.writeShort(ProtocolHeader.PASS).writeByte(sign).writeByte(0x00).writeLong(invokeId).writeInt(0);
+        byte[] bytes = heartBeatPing.getBytes();
+        int length = bytes.length;
+        out.writeShort(ProtocolHeader.PASS).writeByte(sign).writeByte(0x00).writeLong(invokeId).writeInt(length).writeBytes(bytes);
     }
 
     private void doEncodeHeartBeatPong(HeartBeatPong heartBeatPong, ByteBuf out) {
-        byte serializerCode = (byte) SerializationEnum.valueOf(RPCConstants.DEFAULT_SERIALIZATION).getValue();
+        byte serializerCode = (byte) SerializationEnum.valueOf(heartBeatPong.getSerializer()).getValue();
         byte sign = (byte) ((serializerCode << 4) + ProtocolHeader.HEARTBEAT_PONG);
         long id = heartBeatPong.getId();
-        out.writeShort(ProtocolHeader.PASS).writeByte(sign).writeByte(0x00).writeLong(id).writeInt(0);
+        byte[] bytes = heartBeatPong.getBytes();
+        int length = bytes.length;
+        out.writeShort(ProtocolHeader.PASS).writeByte(sign).writeByte(0x00).writeLong(id).writeInt(length).writeBytes(bytes);
     }
 }

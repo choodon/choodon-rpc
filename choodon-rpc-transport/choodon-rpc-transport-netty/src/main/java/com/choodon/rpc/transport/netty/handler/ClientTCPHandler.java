@@ -47,13 +47,17 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             HeartBeatPing request = new HeartBeatPing();
-            ctx.writeAndFlush(request);
+            Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(URLParamType.serialize.getValue());
+            request.setSerializer(URLParamType.serialize.getValue());
+            request.setBytes(serializer.writeObject("ping"));
             RPCContext.setRequest(request);
+            ctx.channel().writeAndFlush(request);
+            LoggerUtil.info(request.getId() + " ping  send time " + System.currentTimeMillis());
             try {
                 RPCContext.syncGet();
                 LoggerUtil.info("receive heatBeat pong from server" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()));
             } catch (RPCTimeOutException e) {
-                LoggerUtil.warn("request heatBeat pong from server timeout -> "+ NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()),e);
+                LoggerUtil.warn("request heatBeat pong from server timeout -> " + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()), e);
                 String client_Server = NetUtil.getHostAndPortStr(ctx.channel().localAddress()) + "-->" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress());
                 long counter = COUNTER_CONTAINER.getAndIncrement(client_Server);
                 if (counter > 3) {
