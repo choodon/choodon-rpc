@@ -97,7 +97,6 @@ public class RPCContext {
         if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_SYNC)) {
             long id = response.getId();
             responsesContainer.put(id, response);
-            LoggerUtil.info(response.getId() + " pong receive time " + System.currentTimeMillis());
             countDownLatchContainer.get(id).countDown();
         } else if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_ASYNC_FUTURE)) {
             RPCFuture future = RPCFuture.removePRCFuture(response.getId());

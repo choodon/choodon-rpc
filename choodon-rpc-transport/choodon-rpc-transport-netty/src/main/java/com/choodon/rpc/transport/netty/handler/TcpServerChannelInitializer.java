@@ -13,9 +13,9 @@ public class TcpServerChannelInitializer extends ChannelInitializer<SocketChanne
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline channelPipeline = channel.pipeline();
-        channelPipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
         channelPipeline.addLast(new ProtocolDecoder());
         channelPipeline.addLast(new ProtocolEncoder());
+        channelPipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
         channelPipeline.addLast(new ServerTCPHandler());
     }
 }

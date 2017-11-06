@@ -22,9 +22,10 @@ public class ClientTest {
 
         HelloWorldService helloWorldService = Interface.getRef(protocolList, registryList, interfaceURL, HelloWorldService.class);
         String hello = null;
+//
 //        for (int i = 0; i < 10000; i++) {
 //            try {
-////                Thread.currentThread().sleep(1000);
+//                Thread.currentThread().sleep(10000);
 //                hello = helloWorldService.sayHello("xx");
 //            } catch (Exception e) {
 //                e.printStackTrace();

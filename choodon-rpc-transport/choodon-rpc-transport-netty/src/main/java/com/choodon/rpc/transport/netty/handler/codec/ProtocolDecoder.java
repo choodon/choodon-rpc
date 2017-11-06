@@ -1,6 +1,5 @@
 package com.choodon.rpc.transport.netty.handler.codec;
 
-import com.choodon.rpc.base.common.RPCConstants;
 import com.choodon.rpc.base.exception.RPCFrameworkException;
 import com.choodon.rpc.base.protocol.*;
 import com.choodon.rpc.transport.netty.common.SerializationEnum;
@@ -13,7 +12,6 @@ import java.util.List;
 
 public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
 
-    // 协议体最大限制, 默认5M
     private static final int MAX_BODY_SIZE = 1024 * 1024 * 5;
 
     private static final boolean USE_COMPOSITE_BUF = true;
@@ -28,9 +26,9 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
     // 协议头
     private final ProtocolHeader header = new ProtocolHeader();
 
-    private static void checkMagic(short magic) throws Signal {
+    private static void checkPass(short magic) throws Signal {
         if (magic != ProtocolHeader.PASS) {
-            throw new RPCFrameworkException("ILLEGAL_MAGIC");
+            throw new RPCFrameworkException("ILLEGAL_PASS");
         }
     }
 
@@ -45,7 +43,7 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         switch (state()) {
             case HEADER_PASS:
-                checkMagic(in.readShort()); // MAGIC
+                checkPass(in.readShort()); // PASS
                 checkpoint(State.HEADER_SIGN);
             case HEADER_SIGN:
                 header.sign(in.readByte()); // 消息标志位
@@ -62,25 +60,14 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
             case BODY: {
                 switch (header.getMessageCode()) {
                     case ProtocolHeader.HEARTBEAT_PING: {
-                        int length = checkBodyLength(header.getBodyLength());
-                        byte[] bytes = new byte[length];
-                        in.readBytes(bytes);
                         HeartBeatPing ping = new HeartBeatPing(header.getId());
-                        String serializationType = SerializationEnum.valueOf("serialization" + header.getSerializerCode()).getValue()
-                                .toString();
-                        ping.setSerializer(serializationType);
-                        ping.setBytes(bytes);
+                        checkpoint(State.HEADER_PASS);
                         out.add(ping);
                         break;
                     }
                     case ProtocolHeader.HEARTBEAT_PONG: {
-                        int length = checkBodyLength(header.getBodyLength());
-                        byte[] bytes = new byte[length];
-                        in.readBytes(bytes);
                         HeartBeatPong pong = new HeartBeatPong(header.getId());
-                        String serializationType = SerializationEnum.valueOf("serialization" + header.getSerializerCode()).getValue()
-                                .toString();
-                        pong.setSerializer(serializationType);
+                        checkpoint(State.HEADER_PASS);
                         out.add(pong);
                         break;
                     }
@@ -93,6 +80,7 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
                                 .toString();
                         request.setSerializer(serializationType);
                         request.setBytes(bytes);
+                        checkpoint(State.HEADER_PASS);
                         out.add(request);
                         break;
                     }
@@ -100,14 +88,13 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
                         int length = checkBodyLength(header.getBodyLength());
                         byte[] bytes = new byte[length];
                         in.readBytes(bytes);
-
                         RPCResponse response = new RPCResponse(header.getId());
                         response.setStatus(header.getStatus());
-                        // todo待处理，根据状态码不同进行后续的反序列处理
                         String serializationType = SerializationEnum.valueOf("serialization" + header.getSerializerCode()).getValue()
                                 .toString();
                         response.setSerializer(serializationType);
                         response.setBytes(bytes);
+                        checkpoint(State.HEADER_PASS);
                         out.add(response);
                         break;
                     }
@@ -115,9 +102,9 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
                         throw new RPCFrameworkException("ILLEGAL_MSGTYPE");
                 }
             }
-            checkpoint(State.HEADER_PASS);
             break;
-            default:  throw new RPCFrameworkException("ILLEGAL PACKET");
+            default:
+                throw new RPCFrameworkException("ILLEGAL PACKET");
         }
     }
 

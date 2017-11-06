@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @SpiMeta(name = RPCConstants.NETTY)
 public class NettyClientFactory implements TransportClientFactory {
-    private final Map<String, TransportClient> clientContainer = new ConcurrentHashMap<>();
+    private static final Map<String, TransportClient> clientContainer = new ConcurrentHashMap<>();
 
     @Override
     public TransportClient createClient(URL mergerURL) {
@@ -27,18 +27,24 @@ public class NettyClientFactory implements TransportClientFactory {
             if (transportProtocol.equalsIgnoreCase(RPCConstants.TCP)) {
                 TransportClient client = ExtensionLoader.getExtensionLoader(TransportClient.class)
                         .getExtension(RPCConstants.NETTY_TCP);
+                client = clientContainer.putIfAbsent(protocolKey, client);
+                if (client == null) {
+                    client = clientContainer.get(protocolKey);
+                }
                 client.init(mergerURL);
                 client.startup();
-                clientContainer.put(protocolKey, client);
-                return client;
+                return clientContainer.get(protocolKey);
             } else if (transportProtocol.equalsIgnoreCase(RPCConstants.HTTP)) {
 
                 TransportClient client = ExtensionLoader.getExtensionLoader(TransportClient.class)
                         .getExtension(RPCConstants.NETTY_TCP);
+                client = clientContainer.putIfAbsent(protocolKey, client);
+                if (client == null) {
+                    client = clientContainer.get(protocolKey);
+                }
                 client.init(mergerURL);
-                clientContainer.put(protocolKey, client);
                 client.startup();
-                return client;
+                return clientContainer.get(protocolKey);
             } else {
                 throw new RPCFrameworkException("Error transport protocol type.");
             }

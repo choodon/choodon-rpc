@@ -21,26 +21,13 @@ public abstract class AbstractNettyServer implements TransportServer {
     protected ServerBootstrap serverBootstrap;
     protected static EventLoopGroup boss;
     protected static EventLoopGroup worker;
-    protected final HashedWheelTimer timer = new HashedWheelTimer(new NamedThreadFactory("server.timer"));
 
     @Override
     public void init(URL protocolURL) {
         this.protocolURL = protocolURL;
-        ThreadFactory bossFactory = new DefaultThreadFactory("rpc.server.boss", Thread.MAX_PRIORITY);
-        ThreadFactory workerFactory = new DefaultThreadFactory("rpc.server.worker", Thread.MAX_PRIORITY);
-        boss = initEventLoopGroup(SystemUtil.getProcessorCoreSize(), bossFactory);
-        worker = initEventLoopGroup(
-                protocolURL.getIntParameter(URLParamType.workThreadNum.getName(), URLParamType.workThreadNum.getIntValue())
-                , workerFactory);
+        NioEventLoopGroup boss = new NioEventLoopGroup(SystemUtil.getProcessorCoreSize() * 2 + 40);
+        NioEventLoopGroup worker = new NioEventLoopGroup(protocolURL.getIntParameter(URLParamType.workThreadNum.getName(), URLParamType.workThreadNum.getIntValue()));
         serverBootstrap = new ServerBootstrap().group(boss, worker);
-    }
-
-    private EventLoopGroup initEventLoopGroup(int nThreads, ThreadFactory tFactory) {
-        return isNativeEt() ? new EpollEventLoopGroup(nThreads, tFactory) : new NioEventLoopGroup(nThreads, tFactory);
-    }
-
-    protected boolean isNativeEt() {
-        return NativeSupport.isSupportNativeET();
     }
 
 }

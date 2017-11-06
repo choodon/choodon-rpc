@@ -1,11 +1,9 @@
 package com.choodon.rpc.transport.netty.handler;
 
-import com.choodon.rpc.base.extension.ExtensionLoader;
 import com.choodon.rpc.base.log.LoggerUtil;
 import com.choodon.rpc.base.protocol.HeartBeatPing;
 import com.choodon.rpc.base.protocol.HeartBeatPong;
 import com.choodon.rpc.base.protocol.RPCRequest;
-import com.choodon.rpc.base.serialization.Serializer;
 import com.choodon.rpc.base.util.NetUtil;
 import com.choodon.rpc.transport.netty.common.RequestHandleTask;
 import com.google.common.util.concurrent.AtomicLongMap;
@@ -22,7 +20,7 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
 
     private static final AtomicLongMap COUNTER_CONTAINER = AtomicLongMap.create();
     private static final AtomicInteger CHANNEL_COUNTER = new AtomicInteger(0);
-    private static final ExecutorService BUSSINESS_EXECUTOR = Executors.newFixedThreadPool(200);
+    private static final ExecutorService BUSSINESS_EXECUTOR = Executors.newFixedThreadPool(500);
 
 
     @Override
@@ -52,12 +50,8 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
             }
         } else if (msg instanceof HeartBeatPing) {
             HeartBeatPing heartBeatPing = (HeartBeatPing) msg;
-            String serializationType = heartBeatPing.getSerializer();
-            Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(serializationType);
-            LoggerUtil.info(serializer.readObject(heartBeatPing.getBytes(), String.class));
+            LoggerUtil.info(NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()) + "  heartbeat ping");
             HeartBeatPong heartBeatPong = new HeartBeatPong(heartBeatPing.getId());
-            heartBeatPong.setSerializer(heartBeatPing.getSerializer());
-            heartBeatPong.setBytes(serializer.writeObject("pong"));
             ctx.writeAndFlush(heartBeatPong);
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal request msg .");

@@ -28,20 +28,8 @@ public class TcpNettyClient extends AbstractNettyClient {
 
     @Override
     public void startup() {
-//        if (isNativeEt()) {
-//            bootstrap.channelFactory(NettyChannelFactory.NATIVE_SERVER);
-//        } else {
-//            bootstrap.channelFactory(NettyChannelFactory.NIO_SERVER);
-//        }
-        bootstrap.option(ChannelOption.SO_REUSEADDR, true);
-        bootstrap.option(ChannelOption.SO_SNDBUF, 65535);
-        bootstrap.option(ChannelOption.SO_RCVBUF, 65535);
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, false);
-        bootstrap.option(ChannelOption.SO_SNDBUF, 65535);
-        bootstrap.option(ChannelOption.SO_RCVBUF, 65535);
         bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000);
         bootstrap.handler(new TcpClientChannelInitializer());
         int channelNum = mergeURL.getIntParameter(URLParamType.channelNum.getName(), URLParamType.channelNum.getIntValue());
@@ -63,7 +51,6 @@ public class TcpNettyClient extends AbstractNettyClient {
             LoggerUtil.error("connect " + mergeURL.getHostPortStr() + " exception", e);
         }
         return channel;
-
     }
 
 

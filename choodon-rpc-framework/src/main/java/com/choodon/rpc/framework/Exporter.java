@@ -65,8 +65,7 @@ public class Exporter {
             registry = registryFactory.getRegistryService(registryURL);
             TransportServerFactory serverFactory = ExtensionLoader.getExtensionLoader(TransportServerFactory.class)
                     .getExtension(protocolURL.getParameter(URLParamType.transportTool.getName(), URLParamType.transportTool.getValue()));
-            TransportServer server = serverFactory.createServer(protocolURL);
-            server.startup();
+            serverFactory.createServer(protocolURL);
             isExport.set(true);
         }
         for (URL serviceURL : serviceURLs) {

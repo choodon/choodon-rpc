@@ -47,9 +47,6 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             HeartBeatPing request = new HeartBeatPing();
-            Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(URLParamType.serialize.getValue());
-            request.setSerializer(URLParamType.serialize.getValue());
-            request.setBytes(serializer.writeObject("ping"));
             RPCContext.setRequest(request);
             ctx.channel().writeAndFlush(request);
             LoggerUtil.info(request.getId() + " ping  send time " + System.currentTimeMillis());
@@ -64,6 +61,8 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
                     ctx.channel().close().sync();
                     LoggerUtil.error("Heartbeat Check failed 3 times,close " + client_Server + "channel. ");
                 }
+            } finally {
+                RPCContext.removeRequest();
             }
 
         }
@@ -72,6 +71,7 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         LoggerUtil.error(NetUtil.getHostAndPortStr(ctx.channel().localAddress()) + "-->" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()) + "connection" + " happened exception", cause);
+        ctx.close().sync();
     }
 
     @Override
