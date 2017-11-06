@@ -35,6 +35,7 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof RPCResponse) {
             RPCContext.receviceResponse((Response) msg);
         } else if (msg instanceof HeartBeatPong) {
+            System.out.println("pong");
             RPCContext.receviceResponse((Response) msg);
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal response msg .");

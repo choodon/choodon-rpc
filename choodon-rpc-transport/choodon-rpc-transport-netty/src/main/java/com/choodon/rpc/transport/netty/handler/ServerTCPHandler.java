@@ -49,10 +49,8 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
                 BUSSINESS_EXECUTOR.submit(task);
             }
         } else if (msg instanceof HeartBeatPing) {
-            HeartBeatPing heartBeatPing = (HeartBeatPing) msg;
             LoggerUtil.info(NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()) + "  heartbeat ping");
-            HeartBeatPong heartBeatPong = new HeartBeatPong(heartBeatPing.getId());
-            ctx.writeAndFlush(heartBeatPong);
+            ctx.writeAndFlush(new HeartBeatPong(((HeartBeatPing) msg).getId()));
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal request msg .");
         }

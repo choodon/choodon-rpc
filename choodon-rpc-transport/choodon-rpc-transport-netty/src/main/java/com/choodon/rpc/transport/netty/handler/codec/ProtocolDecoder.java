@@ -14,13 +14,9 @@ public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
 
     private static final int MAX_BODY_SIZE = 1024 * 1024 * 5;
 
-    private static final boolean USE_COMPOSITE_BUF = true;
 
     public ProtocolDecoder() {
         super(State.HEADER_PASS);
-        if (USE_COMPOSITE_BUF) {
-            setCumulator(COMPOSITE_CUMULATOR);
-        }
     }
 
     // 协议头
