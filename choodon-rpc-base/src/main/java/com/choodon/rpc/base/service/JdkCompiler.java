@@ -55,8 +55,8 @@ public class JdkCompiler {
     @SuppressWarnings("resource")
     public JdkCompiler() {
         options = new ArrayList<String>();
-        options.add("-target");
-        options.add("1.9");
+//        options.add("-target");
+//        options.add("1.9");
         StandardJavaFileManager manager = compiler.getStandardFileManager(diagnosticCollector, null, null);
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (loader instanceof URLClassLoader

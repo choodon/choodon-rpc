@@ -59,6 +59,7 @@ public class TcpNettyClient extends AbstractNettyClient {
         RPCContext.setRequest(request);
         channel.writeAndFlush(request);
         Response response = RPCContext.syncGet();
+        RPCContext.removeRequest();
         return (RPCResponse) response;
     }
 

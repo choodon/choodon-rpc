@@ -73,10 +73,12 @@ public class RPCContext {
         try {
             success = countDownLatch.await(timeOut, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
+            countDownLatchContainer.remove(id);
             LoggerUtil.error("watting  response  is Interrupted ", e);
             throw new RPCFrameworkException("watting  response  is Interrupted");
         }
         if (!success) {
+            countDownLatchContainer.remove(id);
             throw new RPCTimeOutException("service timeout");
         }
         countDownLatchContainer.remove(id);
@@ -96,7 +98,11 @@ public class RPCContext {
         String requestType = response.getParameterValue(URLParamType.requestType.getName(), URLParamType.requestType.getValue());
         if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_SYNC)) {
             long id = response.getId();
-            responsesContainer.put(id, response);
+            if(countDownLatchContainer.containsKey(id)){
+                responsesContainer.put(id, response);
+            }else{
+                return;
+            }
             countDownLatchContainer.get(id).countDown();
         } else if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_ASYNC_FUTURE)) {
             RPCFuture future = RPCFuture.removePRCFuture(response.getId());

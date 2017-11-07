@@ -35,8 +35,9 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof RPCResponse) {
             RPCContext.receviceResponse((Response) msg);
         } else if (msg instanceof HeartBeatPong) {
-            System.out.println("pong");
-            RPCContext.receviceResponse((Response) msg);
+            String client_Server = NetUtil.getHostAndPortStr(ctx.channel().localAddress()) + "-->" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress());
+            COUNTER_CONTAINER.getAndDecrement(client_Server);
+            LoggerUtil.info(client_Server + " receive  heartbeat pong");
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal response msg .");
         }
@@ -50,21 +51,14 @@ public class ClientTCPHandler extends ChannelInboundHandlerAdapter {
             HeartBeatPing request = new HeartBeatPing();
             RPCContext.setRequest(request);
             ctx.channel().writeAndFlush(request);
-            LoggerUtil.info(request.getId() + " ping  send time " + System.currentTimeMillis());
-            try {
-                RPCContext.syncGet();
-                LoggerUtil.info("receive heatBeat pong from server" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()));
-            } catch (RPCTimeOutException e) {
-                LoggerUtil.warn("request heatBeat pong from server timeout -> " + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()), e);
-                String client_Server = NetUtil.getHostAndPortStr(ctx.channel().localAddress()) + "-->" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress());
-                long counter = COUNTER_CONTAINER.getAndIncrement(client_Server);
-                if (counter > 3) {
-                    ctx.channel().close().sync();
-                    LoggerUtil.error("Heartbeat Check failed 3 times,close " + client_Server + "channel. ");
-                }
-            } finally {
-                RPCContext.removeRequest();
+            String client_Server = NetUtil.getHostAndPortStr(ctx.channel().localAddress()) + "-->" + NetUtil.getHostAndPortStr(ctx.channel().remoteAddress());
+            long counter = COUNTER_CONTAINER.getAndIncrement(client_Server);
+            LoggerUtil.info(client_Server + " send  heartbeat ping");
+            if (counter > 3) {
+                ctx.channel().close().sync();
+                LoggerUtil.error("Heartbeat Check failed 3 times,close " + client_Server + "channel. ");
             }
+
 
         }
     }

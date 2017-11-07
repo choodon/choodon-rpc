@@ -16,7 +16,7 @@ public class TcpClientChannelInitializer extends ChannelInitializer<SocketChanne
         ChannelPipeline channelPipeline = ch.pipeline();
         channelPipeline.addLast(new ProtocolDecoder());
         channelPipeline.addLast(new ProtocolEncoder());
-        channelPipeline.addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+        channelPipeline.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
         channelPipeline.addLast(new ClientTCPHandler());
     }
 }

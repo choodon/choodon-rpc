@@ -372,7 +372,7 @@ public class URL {
             return false;
         }
         URL ou = (URL) obj;
-        if (!ObjectUtils.equals(this.protocol, ou.protocol)) {
+        if (!Objects.equals(this.protocol, ou.protocol)) {
             return false;
         }
         if (!Objects.equals(this.host, ou.host)) {

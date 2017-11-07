@@ -4,6 +4,7 @@ import com.choodon.rpc.base.log.LoggerUtil;
 import com.choodon.rpc.base.protocol.HeartBeatPing;
 import com.choodon.rpc.base.protocol.HeartBeatPong;
 import com.choodon.rpc.base.protocol.RPCRequest;
+import com.choodon.rpc.base.protocol.Request;
 import com.choodon.rpc.base.util.NetUtil;
 import com.choodon.rpc.transport.netty.common.RequestHandleTask;
 import com.google.common.util.concurrent.AtomicLongMap;
@@ -41,16 +42,13 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof RPCRequest) {
-            RequestHandleTask task = new RequestHandleTask((RPCRequest) msg, ctx);
+        if (msg instanceof RPCRequest || msg instanceof HeartBeatPing ) {
+            RequestHandleTask task = new RequestHandleTask((Request) msg, ctx);
             if (null == BUSSINESS_EXECUTOR) {
                 new Thread(task).start();
             } else {
                 BUSSINESS_EXECUTOR.submit(task);
             }
-        } else if (msg instanceof HeartBeatPing) {
-            LoggerUtil.info(NetUtil.getHostAndPortStr(ctx.channel().remoteAddress()) + "  heartbeat ping");
-            ctx.writeAndFlush(new HeartBeatPong(((HeartBeatPing) msg).getId()));
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal request msg .");
         }

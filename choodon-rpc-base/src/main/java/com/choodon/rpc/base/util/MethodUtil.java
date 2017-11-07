@@ -8,7 +8,7 @@ public class MethodUtil {
 		sb.append(method.getName());
 		sb.append("(");
 		Class<?>[] parameterTypes = method.getParameterTypes();
-		for (int i = 0; i < method.getParameterCount(); i++) {
+		for (int i = 0; i < method.getParameterTypes().length; i++) {
 			if (i == 0) {
 				sb.append(parameterTypes[i].getCanonicalName());
 			} else {
