@@ -25,7 +25,7 @@ public abstract class AbstractNettyServer implements TransportServer {
     @Override
     public void init(URL protocolURL) {
         this.protocolURL = protocolURL;
-        NioEventLoopGroup boss = new NioEventLoopGroup(SystemUtil.getProcessorCoreSize() * 2 + 40);
+        NioEventLoopGroup boss = new NioEventLoopGroup((protocolURL.getIntParameter(URLParamType.bossThreadNum.getName(), URLParamType.bossThreadNum.getIntValue())));
         NioEventLoopGroup worker = new NioEventLoopGroup(protocolURL.getIntParameter(URLParamType.workThreadNum.getName(), URLParamType.workThreadNum.getIntValue()));
         serverBootstrap = new ServerBootstrap().group(boss, worker);
     }

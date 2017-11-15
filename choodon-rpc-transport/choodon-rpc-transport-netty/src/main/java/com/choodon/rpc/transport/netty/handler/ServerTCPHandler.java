@@ -1,8 +1,9 @@
 package com.choodon.rpc.transport.netty.handler;
 
+import com.choodon.rpc.base.common.URL;
+import com.choodon.rpc.base.common.URLParamType;
 import com.choodon.rpc.base.log.LoggerUtil;
 import com.choodon.rpc.base.protocol.HeartBeatPing;
-import com.choodon.rpc.base.protocol.HeartBeatPong;
 import com.choodon.rpc.base.protocol.RPCRequest;
 import com.choodon.rpc.base.protocol.Request;
 import com.choodon.rpc.base.util.NetUtil;
@@ -21,7 +22,13 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
 
     private static final AtomicLongMap COUNTER_CONTAINER = AtomicLongMap.create();
     private static final AtomicInteger CHANNEL_COUNTER = new AtomicInteger(0);
-    private static final ExecutorService BUSSINESS_EXECUTOR = Executors.newFixedThreadPool(500);
+    private static ExecutorService executorService;
+
+    public ServerTCPHandler(URL protocolURL) {
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(protocolURL.getIntParameter(URLParamType.bussinessThreadNum.getName(), URLParamType.bussinessThreadNum.getIntValue()));
+        }
+    }
 
 
     @Override
@@ -42,12 +49,12 @@ public class ServerTCPHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof RPCRequest || msg instanceof HeartBeatPing ) {
+        if (msg instanceof RPCRequest || msg instanceof HeartBeatPing) {
             RequestHandleTask task = new RequestHandleTask((Request) msg, ctx);
-            if (null == BUSSINESS_EXECUTOR) {
+            if (null == executorService) {
                 new Thread(task).start();
             } else {
-                BUSSINESS_EXECUTOR.submit(task);
+                executorService.submit(task);
             }
         } else {
             LoggerUtil.error(msg.getClass().getCanonicalName() + " is illegal request msg .");

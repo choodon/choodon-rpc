@@ -29,7 +29,7 @@ public class TcpNettyServer extends AbstractNettyServer {
         serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
         serverBootstrap.channel(NioServerSocketChannel.class);
         serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
-        serverBootstrap.childHandler(new TcpServerChannelInitializer());
+        serverBootstrap.childHandler(new TcpServerChannelInitializer(protocolURL));
         try {
             channelFuture = serverBootstrap.bind(protocolURL.getPort()).sync();
         } catch (InterruptedException e) {

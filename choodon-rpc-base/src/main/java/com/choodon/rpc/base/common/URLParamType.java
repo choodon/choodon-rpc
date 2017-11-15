@@ -1,5 +1,7 @@
 package com.choodon.rpc.base.common;
 
+import com.choodon.rpc.base.util.SystemUtil;
+
 public enum URLParamType {
     haStrategy("haStrategy", RPCConstants.HA_STRATEGY_FAILOVER),
     loadBalance("loadBalance", RPCConstants.LOAD_BALANCE_ROUNDROBIN),
@@ -13,7 +15,9 @@ public enum URLParamType {
     transportProtocol("transportProtocol", RPCConstants.TCP),
     transportHost("transportHost", "127.0.0.1"),
     transportPort("transportPort", "8080"),
-    workThreadNum("workThreadNum", "200"),
+    workThreadNum("workThreadNum", "100"),
+    bossThreadNum("bossThreadNum", (SystemUtil.getProcessorCoreSize() * 2 + 1) + ""),
+    bussinessThreadNum("bussinessThreadNum", "500"),
     registryRetryInterval("registryRetryInterval", "3000"),
     registrySessionTimeOut("registrySessionTimeOut", "6000"),
     registryTimeOut("registryTimeOut", "6000"),
