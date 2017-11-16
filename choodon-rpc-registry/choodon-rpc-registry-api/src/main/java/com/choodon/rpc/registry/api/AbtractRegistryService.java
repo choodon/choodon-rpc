@@ -225,29 +225,10 @@ public abstract class AbtractRegistryService implements RegistryService {
             try {
                 doNotify(subscriberURL);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                subscribeNotifyContainer.get(subscriberURL).clear();
+                subscribe(subscriberURL, listenerContianer.get(subscriberURL));
+                LoggerUtil.error("Notify Exception", e);
             }
-//            notifyExecutor.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    while (!isShutdown.get()) {
-//                        int times = 0;
-//                        while (times < 3) {
-//                            try {
-//                                doNotify(subscriberURL);
-//                                break;
-//                            } catch (InterruptedException e) {
-//                                times++;
-//                            }
-//                        }
-//                        if (times >= 3) {
-//                            subscribeNotifyContainer.get(subscriberURL).clear();
-//                            subscribe(subscriberURL, listenerContianer.get(subscriberURL));
-//                        }
-//                    }
-//
-//                }
-//            });
         }
     }
 

@@ -42,6 +42,9 @@ public class MultiProtocolMultiRegistryInvocationHandler implements InvocationHa
         request.addParameter(RPCConstants.CLUSTER_KEY, mergerURL.getParameter(RPCConstants.CLUSTER_KEY));
         request.setBytes(serializer.writeObject(dataArea));
         RPCResponse response = cluster.syncCall(request);
+        if (response == null) {
+            return null;
+        }
         return response.getData();
     }
 }

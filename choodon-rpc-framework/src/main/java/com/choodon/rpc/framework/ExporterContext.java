@@ -29,9 +29,18 @@ public class ExporterContext {
     }
 
 
-    public static void export(String[] packagePaths, URL protocolURL, URL registryURL) {
+    public static void export(String[] packageNames, URL protocolURL, URL registryURL) {
         Exporter exporter = createExporter(protocolURL, registryURL);
-        exporter.export(packagePaths);
+        exporter.export(packageNames);
+
+    }
+
+    public static void export(String[] packageNames, List<URL> protocolURLs, List<URL> registryURLs) {
+        for (URL protocolURL : protocolURLs) {
+            for (URL registryURL : registryURLs) {
+                export(packageNames, protocolURL, registryURL);
+            }
+        }
 
     }
 

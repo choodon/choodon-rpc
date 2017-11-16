@@ -7,6 +7,7 @@ import com.choodon.rpc.base.common.URL;
 import com.choodon.rpc.base.common.URLParamType;
 import com.choodon.rpc.base.extension.ExtensionLoader;
 import com.choodon.rpc.base.extension.SpiMeta;
+import com.choodon.rpc.base.log.LoggerUtil;
 import com.choodon.rpc.base.protocol.RPCRequest;
 import com.choodon.rpc.base.protocol.RPCResponse;
 import com.choodon.rpc.base.util.URLTools;
@@ -23,17 +24,28 @@ public class DefaultCluster extends AbstractCluster {
 
     @Override
     public RPCResponse syncCall(RPCRequest request) throws Exception {
-
+        if (referers.size() == 0) {
+            LoggerUtil.warn(mergerURL.getParameter(RPCConstants.CLUSTER_KEY) + " has no providers.");
+            return null;
+        }
         return haStrategy.syncCall(request, referers, loadBalance);
     }
 
     @Override
     public RPCFuture asyncCall(RPCRequest request) throws Exception {
+        if (referers.size() == 0) {
+            LoggerUtil.warn(mergerURL.getParameter(RPCConstants.CLUSTER_KEY) + " has no providers.");
+            return null;
+        }
         return haStrategy.asyncCall(request, referers, loadBalance);
     }
 
     @Override
     public void callback(RPCRequest request, RPCCallback callBack) throws Exception {
+        if (referers.size() == 0) {
+            LoggerUtil.warn(mergerURL.getParameter(RPCConstants.CLUSTER_KEY) + " has no providers.");
+            return;
+        }
         haStrategy.callback(request, callBack, referers, loadBalance);
     }
 
