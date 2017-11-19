@@ -37,9 +37,8 @@ public class ServiceManager {
     private static List<URL> init(String packageName) throws RPCFrameworkException {
         List<URL> serviceURLs = new LinkedList<>();
         Map<Class, Class> class2InterfaceMapperContainer = RPCServiceClassManager.getServiceClass2InterfaceMapperContainer(packageName);
-
-        String handlerId = null;
-        StringBuilder serviceDes = null;
+        String handlerId;
+        StringBuilder serviceDes;
         for (Entry<Class, Class> entry : class2InterfaceMapperContainer.entrySet()) {
             serviceDes = getServiceDes(entry);
             Class<?> clazz = entry.getKey();
@@ -60,7 +59,7 @@ public class ServiceManager {
     public static void handle(Class<?> clazz) {
 
         if (clazz.isAnnotationPresent(ServiceImpl.class)) {
-            Object obj = null;
+            Object obj;
             Class<?>[] interfaceClasses = clazz.getInterfaces();
             Class interfaceClazz = null;
             boolean isAnnotationServicePresent = false;
@@ -73,7 +72,7 @@ public class ServiceManager {
                         LoggerUtil.error("Service class`s constructor should be public  ", e);
                         throw new RPCFrameworkException("Service class`s constructor should be public  ");
                     } catch (Exception e) {
-                        LoggerUtil.error("Service Instantite exception ", e);
+                        LoggerUtil.error("Service instantite exception ", e);
                         throw new RPCFrameworkException("Service instantite instance exception .");
                     }
                     RPCServiceClassManager.addServieInstance(clazz, obj);

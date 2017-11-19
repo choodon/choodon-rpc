@@ -10,19 +10,7 @@ import java.lang.reflect.Method;
 
 public class ClassFactory {
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Method[] getServiceMethod(Class clazz) {
-        if (!clazz.isAnnotationPresent(ServiceImpl.class)) {
-            return null;
-        }
-        Class[] clazzs = clazz.getInterfaces();
-        for (Class interfaceClass : clazzs) {
-            if (interfaceClass.isAnnotationPresent(Service.class)) {
-                return interfaceClass.getDeclaredMethods();
-            }
-        }
-        return null;
-    }
+
 
 
     public static ServiceHandler getServiceHandler(Class<?> clazz, Method method) {

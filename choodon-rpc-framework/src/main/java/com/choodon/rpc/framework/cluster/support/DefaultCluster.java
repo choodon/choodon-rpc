@@ -49,24 +49,53 @@ public class DefaultCluster extends AbstractCluster {
         haStrategy.callback(request, callBack, referers, loadBalance);
     }
 
-
     @Override
     public void notify(URL url, EventTypeEnum envetType) {
-        Referer referer;
         switch (envetType) {
             case ADD:
-                referer = RefererManager.create(url);
-                referers.add(referer);
+                addNotify(url);
                 break;
             case UPDATE:
+                updateNotify(url);
                 break;
             case REMOVE:
-                referer = RefererManager.create(url);
-                referers.remove(referer);
+                removeNotify(url);
                 break;
         }
 
     }
+
+    private void addNotify(URL url) {
+        String catagray = url.getParameter(RPCConstants.CATAGRAY);
+        switch (catagray) {
+            case RPCConstants.PROVIDER_CATAGRAY:
+                Referer referer = RefererManager.create(url);
+                referers.add(referer);
+            default:
+                LoggerUtil.error("unknown catagray,Notify URL: " + url);
+        }
+    }
+
+    private void updateNotify(URL url) {
+        String catagray = url.getParameter(RPCConstants.CATAGRAY);
+        switch (catagray) {
+            case RPCConstants.PROVIDER_CATAGRAY:
+            default:
+                LoggerUtil.error("unknown catagray,Notify URL: " + url);
+        }
+    }
+
+    private void removeNotify(URL url) {
+        String catagray = url.getParameter(RPCConstants.CATAGRAY);
+        switch (catagray) {
+            case RPCConstants.PROVIDER_CATAGRAY:
+                Referer referer = RefererManager.create(url);
+                referers.remove(referer);
+            default:
+                LoggerUtil.error("unknown catagray,Notify URL: " + url);
+        }
+    }
+
 
     @Override
     public void init(URL interfaceURL, URL protocolURL, URL registryURL) {

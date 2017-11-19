@@ -32,15 +32,14 @@ public class RPCServiceClassManager {
 
 
     public static Map<Class, Class> getServiceClass2InterfaceMapperContainer(String packageName) {
-        Set<Class<?>> classSet = new HashSet<Class<?>>();
-
+        Set<Class<?>> classSet = new HashSet<>();
         try {
             Enumeration<URL> urls = Thread.currentThread().getContextClassLoader()
                     .getResources(packageName.replace(".", "/"));
-            URL url = null;
-            String protocol = null;
-            JarURLConnection jarURLConnection = null;
-            JarFile jarFile = null;
+            URL url;
+            String protocol;
+            JarURLConnection jarURLConnection;
+            JarFile jarFile;
             while (urls.hasMoreElements()) {
                 url = urls.nextElement();
                 if (null != url) {
@@ -96,7 +95,7 @@ public class RPCServiceClassManager {
                             LoggerUtil.error("Service class`s constructor should be public  ", e);
                             throw new RPCFrameworkException("Service class`s constructor should be public  ");
                         } catch (Exception e) {
-                            LoggerUtil.error("Service Instantite exception ", e);
+                            LoggerUtil.error("Service instantite exception ", e);
                             throw new RPCFrameworkException("Service instantite instance exception .");
                         }
                         break;

@@ -12,21 +12,20 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Interface {
+    
     public static <T> T getRef(URL protocolurl, URL registryURL, URL interfaceURL, Class refInterface) {
-        String clusterName = interfaceURL.getParameter(URLParamType.cluster.getName(),
-                URLParamType.cluster.getValue());
         Cluster cluster = ClusterManager.createCluster(interfaceURL, protocolurl, registryURL);
         T ref = (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{refInterface}, new SingleProtocolSingleRegistryInvocationHandler(cluster));
         return ref;
     }
 
-    public static <T> T getRef(List<URL> protocolurls, List<URL> registryURLs,
+    public static <T> T getRef(List<URL> protocolURLs, List<URL> registryURLs,
             URL interfaceURL, Class refInterface) {
         CopyOnWriteArrayList clusters = new CopyOnWriteArrayList();
-        Cluster cluster = null;
-        for (URL protocolurl : protocolurls) {
+        Cluster cluster;
+        for (URL protocolURL : protocolURLs) {
             for (URL registryURL : registryURLs) {
-                cluster = ClusterManager.createCluster(interfaceURL, protocolurl, registryURL);
+                cluster = ClusterManager.createCluster(interfaceURL, protocolURL, registryURL);
                 clusters.add(cluster);
             }
         }
