@@ -15,6 +15,8 @@ public interface Cluster extends NotifyListener {
 
     URL getMergerURL();
 
+    boolean isAvailable();
+
     RPCResponse syncCall(RPCRequest request) throws Exception;
 
     RPCFuture asyncCall(RPCRequest request) throws Exception;

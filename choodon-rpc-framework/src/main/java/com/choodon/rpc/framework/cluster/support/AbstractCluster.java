@@ -20,4 +20,9 @@ public abstract class AbstractCluster implements Cluster {
     public URL getMergerURL() {
         return mergerURL;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return referers.size() > 0;
+    }
 }
