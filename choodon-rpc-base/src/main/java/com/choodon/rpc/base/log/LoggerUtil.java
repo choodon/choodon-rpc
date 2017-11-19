@@ -1,102 +1,90 @@
 package com.choodon.rpc.base.log;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class LoggerUtil {
-	private static LogService logService = new DefaultLogService();// 可以通过设置为不同logservice控制log行为。
+    static {
+        System.setProperty("DLog4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+    }
 
-	public static boolean isTraceEnabled() {
-		return logService.isTraceEnabled();
-	}
+    public static void trace(String msg) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.trace(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+    }
 
-	public static boolean isDebugEnabled() {
-		return logService.isDebugEnabled();
-	}
+    public static void debug(String msg) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+    }
 
-	public static boolean isWarnEnabled() {
-		return logService.isWarnEnabled();
-	}
+    public static void debug(String format, Object... argArray) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+    }
 
-	public static boolean isErrorEnabled() {
-		return logService.isErrorEnabled();
-	}
+    public static void debug(String msg, Throwable t) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+    }
 
-	public static boolean isStatsEnabled() {
-		return logService.isStatsEnabled();
-	}
+    public static void info(String msg) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+    }
 
-	public static void trace(String msg) {
-		logService.trace(msg);
-	}
+    public static void info(String format, Object... argArray) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+    }
 
-	public static void debug(String msg) {
-		logService.debug(msg);
-	}
+    public static void info(String msg, Throwable t) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+    }
 
-	public static void debug(String format, Object... argArray) {
-		logService.debug(format, argArray);
-	}
+    public static void warn(String msg) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+    }
 
-	public static void debug(String msg, Throwable t) {
-		logService.debug(msg, t);
-	}
+    public static void warn(String format, Object... argArray) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+    }
 
-	public static void info(String msg) {
-		logService.info(msg);
-	}
+    public static void warn(String msg, Throwable t) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+    }
 
-	public static void info(String format, Object... argArray) {
-		logService.info(format, argArray);
-	}
+    public static void error(String msg) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+    }
 
-	public static void info(String msg, Throwable t) {
-		logService.info(msg, t);
-	}
+    public static void error(String format, Object... argArray) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+    }
 
-	public static void warn(String msg) {
-		logService.warn(msg);
-	}
+    public static void error(String msg, Throwable t) {
+        StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
+        Logger logger = LogManager.getLogger(stackTraceElement.getClass());
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+    }
 
-	public static void warn(String format, Object... argArray) {
-		logService.warn(format, argArray);
-	}
-
-	public static void warn(String msg, Throwable t) {
-		logService.warn(msg, t);
-	}
-
-	public static void error(String msg) {
-		logService.error(msg);
-	}
-
-	public static void error(String format, Object... argArray) {
-		logService.error(format, argArray);
-	}
-
-	public static void error(String msg, Throwable t) {
-		logService.error(msg, t);
-	}
-
-	public static void accessLog(String msg) {
-		logService.accessLog(msg);
-	}
-
-	public static void accessStatsLog(String msg) {
-		logService.accessStatsLog(msg);
-	}
-
-	public static void accessStatsLog(String format, Object... argArray) {
-		logService.accessStatsLog(format, argArray);
-	}
-
-	public static void accessProfileLog(String format, Object... argArray) {
-		logService.accessProfileLog(format, argArray);
-	}
-
-	public static LogService getLogService() {
-		return logService;
-	}
-
-	public static void setLogService(LogService logService) {
-		LoggerUtil.logService = logService;
-	}
 
 }

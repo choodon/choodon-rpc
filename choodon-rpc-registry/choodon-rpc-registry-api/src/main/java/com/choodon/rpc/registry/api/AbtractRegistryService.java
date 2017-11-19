@@ -99,9 +99,7 @@ public abstract class AbtractRegistryService implements RegistryService {
                         registryURLs.remove(url);
                     } catch (Throwable t) {
                         if (url != null) {
-                            if (LoggerUtil.isWarnEnabled()) {
-                                LoggerUtil.warn("Register [{}] fail: {}, will try again...", url, t);
-                            }
+                            LoggerUtil.warn("Register [{}] fail: {}, will try again...", url, t);
                             failedRegisterURLQueue.add(url);
                         }
                     }
@@ -119,9 +117,7 @@ public abstract class AbtractRegistryService implements RegistryService {
                         doUnRegister(URL);
                     } catch (Throwable t) {
                         if (URL != null) {
-                            if (LoggerUtil.isWarnEnabled()) {
-                                LoggerUtil.warn("UnRegister [{}] fail: {}, will try again...", URL, t);
-                            }
+                            LoggerUtil.warn("UnRegister [{}] fail: {}, will try again...", URL, t);
                             failedUnRegisterURLQueue.add(URL);
                         }
                     }
@@ -138,9 +134,7 @@ public abstract class AbtractRegistryService implements RegistryService {
                         doSubscribe(URL, listenerContianer.get(URL));
                     } catch (Throwable t) {
                         if (URL != null) {
-                            if (LoggerUtil.isWarnEnabled()) {
-                                LoggerUtil.warn("Subscribe [{}] fail: {}, will try again...", URL, t);
-                            }
+                            LoggerUtil.warn("Subscribe [{}] fail: {}, will try again...", URL, t);
                             failedSubscribeURLQueue.add(URL);
                         }
                     }
@@ -157,9 +151,7 @@ public abstract class AbtractRegistryService implements RegistryService {
                         doUnSubscribe(URL, listenerContianer.get(URL));
                     } catch (Throwable t) {
                         if (URL != null) {
-                            if (LoggerUtil.isWarnEnabled()) {
-                                LoggerUtil.warn("UnSubscribe [{}] fail: {}, will try again...", URL, t);
-                            }
+                            LoggerUtil.warn("UnSubscribe [{}] fail: {}, will try again...", URL, t);
                             failedUnSubscribeURLQueue.add(URL);
                         }
                     }
