@@ -11,79 +11,79 @@ public class LoggerUtil {
     public static void trace(String msg) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.trace(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+        logger.trace(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg);
     }
 
     public static void debug(String msg) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg);
     }
 
     public static void debug(String format, Object... argArray) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + format, argArray);
     }
 
     public static void debug(String msg, Throwable t) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+        logger.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg, t);
     }
 
     public static void info(String msg) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg);
     }
 
     public static void info(String format, Object... argArray) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + format, argArray);
     }
 
     public static void info(String msg, Throwable t) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+        logger.info(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg, t);
     }
 
     public static void warn(String msg) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg);
     }
 
     public static void warn(String format, Object... argArray) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + format, argArray);
     }
 
     public static void warn(String msg, Throwable t) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+        logger.warn(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg, t);
     }
 
     public static void error(String msg) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg);
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg);
     }
 
     public static void error(String format, Object... argArray) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + format, argArray);
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + format, argArray);
     }
 
     public static void error(String msg, Throwable t) {
         StackTraceElement stackTraceElement = new Exception().getStackTrace()[1];
         Logger logger = LogManager.getLogger(stackTraceElement.getClass());
-        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "()" + "[line:" + stackTraceElement.getLineNumber() + "]: " + msg, t);
+        logger.error(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "(" +stackTraceElement.getFileName()+":"+ stackTraceElement.getLineNumber() + ")-- " + msg, t);
     }
 
 
