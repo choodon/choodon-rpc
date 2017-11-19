@@ -63,6 +63,6 @@ public class MultiProtocolMultiRegistryInvocationHandler implements InvocationHa
         sb.setLength(sb.length() - 1);
         String[] args = sb.toString().split(",");
         int index = ThreadLocalRandom.current().nextInt(0, args.length);
-        return target.get(index);
+        return target.get(Integer.parseInt(args[index]));
     }
 }
