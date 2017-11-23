@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 @Sharable
-public class ProtocolEncoder extends MessageToByteEncoder<Holder> {
+public class TcpProtocolEncoder extends MessageToByteEncoder<Holder> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Holder msg, ByteBuf out) throws Exception {

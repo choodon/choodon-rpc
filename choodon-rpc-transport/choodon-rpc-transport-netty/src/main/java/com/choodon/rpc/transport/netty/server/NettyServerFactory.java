@@ -37,7 +37,7 @@ public class NettyServerFactory implements TransportServerFactory {
             } else if (transportProtocol.equalsIgnoreCase(RPCConstants.HTTP)) {
 
                 TransportServer server = ExtensionLoader.getExtensionLoader(TransportServer.class)
-                        .getExtension(RPCConstants.NETTY_TCP);
+                        .getExtension(RPCConstants.NETTY_HTTP);
                 server = serverContainer.put(protocolKey, server);
                 if (server == null) {
                     server = serverContainer.get(protocolKey);

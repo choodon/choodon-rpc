@@ -1,1 +1,2 @@
 com.choodon.rpc.transport.netty.client.TcpNettyClient
+com.choodon.rpc.transport.netty.client.HttpNettyClient

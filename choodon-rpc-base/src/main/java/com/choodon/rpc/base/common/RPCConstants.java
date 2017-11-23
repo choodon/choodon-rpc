@@ -44,4 +44,13 @@ public class RPCConstants {
     public static final String LOAD_BALANCE_RANDOM = "random";
     public static final String HA_STRATEGY_FAILOVER = "failover";
     public static final String HA_STRATEGY_FAILFAST = "failfast";
+    public static final String PROTOCOL_LENGTH = "length";
+    public static final String MESSAGE_TYPE = "type";
+    public static final String MESSAGE_TYPE_REQUEST = "request";
+    public static final String MESSAGE_TYPE_RESPONSE = "response";
+    public static final String MESSAGE_TYPE_PING = "ping";
+    public static final String MESSAGE_TYPE_PONG = "pong";
+    public static final String HTTP_KEEP_ALIVE = "keep-alive";
+
+
 }

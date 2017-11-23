@@ -1,1 +1,2 @@
 com.choodon.rpc.transport.netty.server.TcpNettyServer
+com.choodon.rpc.transport.netty.server.HttpNettyServer

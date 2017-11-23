@@ -10,12 +10,12 @@ import io.netty.util.Signal;
 
 import java.util.List;
 
-public class ProtocolDecoder extends ReplayingDecoder<ProtocolDecoder.State> {
+public class TcpProtocolDecoder extends ReplayingDecoder<TcpProtocolDecoder.State> {
 
     private static final int MAX_BODY_SIZE = 1024 * 1024 * 5;
 
 
-    public ProtocolDecoder() {
+    public TcpProtocolDecoder() {
         super(State.HEADER_PASS);
     }
 

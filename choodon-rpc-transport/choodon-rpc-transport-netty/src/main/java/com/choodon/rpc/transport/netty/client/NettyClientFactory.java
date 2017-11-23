@@ -35,9 +35,8 @@ public class NettyClientFactory implements TransportClientFactory {
                 client.startup();
                 return clientContainer.get(protocolKey);
             } else if (transportProtocol.equalsIgnoreCase(RPCConstants.HTTP)) {
-
                 TransportClient client = ExtensionLoader.getExtensionLoader(TransportClient.class)
-                        .getExtension(RPCConstants.NETTY_TCP);
+                        .getExtension(RPCConstants.NETTY_HTTP);
                 client = clientContainer.put(protocolKey, client);
                 if (client == null) {
                     client = clientContainer.get(protocolKey);

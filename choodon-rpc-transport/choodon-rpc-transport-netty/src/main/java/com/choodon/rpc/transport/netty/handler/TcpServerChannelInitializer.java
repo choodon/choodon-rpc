@@ -1,8 +1,8 @@
 package com.choodon.rpc.transport.netty.handler;
 
 import com.choodon.rpc.base.common.URL;
-import com.choodon.rpc.transport.netty.handler.codec.ProtocolDecoder;
-import com.choodon.rpc.transport.netty.handler.codec.ProtocolEncoder;
+import com.choodon.rpc.transport.netty.handler.codec.TcpProtocolDecoder;
+import com.choodon.rpc.transport.netty.handler.codec.TcpProtocolEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -22,8 +22,8 @@ public class TcpServerChannelInitializer extends ChannelInitializer<SocketChanne
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline channelPipeline = channel.pipeline();
-        channelPipeline.addLast(new ProtocolDecoder());
-        channelPipeline.addLast(new ProtocolEncoder());
+        channelPipeline.addLast(new TcpProtocolDecoder());
+        channelPipeline.addLast(new TcpProtocolEncoder());
         channelPipeline.addLast(new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS));
         channelPipeline.addLast(serverTCPHandler);
     }

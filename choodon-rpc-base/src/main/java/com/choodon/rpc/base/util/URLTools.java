@@ -58,6 +58,8 @@ public class URLTools {
         serviceURL.setHost(protocolURL.getHost());
         serviceURL.setPort(protocolURL.getPort());
         serviceURL.addParameters(protocolURL.getParameters());
+        serviceURL.addParameter(URLParamType.transportTool.getName(), protocolURL.getParameter(URLParamType.transportTool.getName(), URLParamType.transportTool.getValue()));
+        serviceURL.addParameter(URLParamType.transportProtocol.getName(), protocolURL.getParameter(URLParamType.transportProtocol.getName(), URLParamType.transportProtocol.getValue()));
         serviceURL.addParameter(RPCConstants.CATAGRAY, RPCConstants.PROVIDER_CATAGRAY);
         return serviceURL;
     }

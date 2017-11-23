@@ -55,7 +55,7 @@ public class Holder {
         headers.put(key, value);
     }
 
-    public void addParameter(Map<String, String> parameters) {
+    public void addParameters(Map<String, String> parameters) {
         headers.putAll(parameters);
     }
 
@@ -87,6 +87,22 @@ public class Holder {
     public Long getParameterLongValue(String key, Long def) {
         if (headers.containsKey(key)) {
             return Long.parseLong(headers.get(key));
+        } else {
+            return def;
+        }
+    }
+
+    public Boolean getParameterBooleanValue(String key) {
+        if (headers.containsKey(key)) {
+            return Boolean.parseBoolean(headers.get(key));
+        } else {
+            return null;
+        }
+    }
+
+    public Boolean getParameterBooleanValue(String key, boolean def) {
+        if (headers.containsKey(key)) {
+            return Boolean.parseBoolean(headers.get(key));
         } else {
             return def;
         }

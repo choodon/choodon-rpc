@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientTest {
-    private static URL protocol = URL.valueOf("tcp://0.0.0.0:8080/");
+    private static URL protocol = URL.valueOf("choodon://0.0.0.0:8080/?transportProtocol=http");
     private static URL registry1 = URL.valueOf("zookeeper://0.0.0.0:0000/?registyConnecting=127.0.0.1:2181");
     private static URL interfaceURL = URL.valueOf("choodon://0.0.0.0:0000/com.choodon.rpc.example.service.HelloWorldServiceImpl");
 
@@ -21,14 +21,19 @@ public class ClientTest {
 
         HelloWorldService helloWorldService = Interface.getRef(protocolList, registryList, interfaceURL, HelloWorldService.class);
         String hello = null;
+        long time = System.currentTimeMillis();
         Thread.currentThread().sleep(10000);
-        for (int i = 0; i < 1000000000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             try {
                 hello = helloWorldService.sayHello("xx");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
             System.out.println(hello);
+            if (i % 10000 == 0) {
+                System.out.println("tps=" + (i / (System.currentTimeMillis() - time) * 1000));
+            }
         }
 
 

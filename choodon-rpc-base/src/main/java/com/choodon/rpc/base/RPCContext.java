@@ -93,7 +93,7 @@ public class RPCContext {
             Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(serializationType);
             DataArea dataArea = serializer.readObject(response.getBytes(), DataArea.class);
             response.setData(dataArea.getArgs()[0]);
-            response.addParameter(dataArea.getHeader());
+            response.addParameters(dataArea.getHeader());
         }
         String requestType = response.getParameterValue(URLParamType.requestType.getName(), URLParamType.requestType.getValue());
         if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_SYNC)) {

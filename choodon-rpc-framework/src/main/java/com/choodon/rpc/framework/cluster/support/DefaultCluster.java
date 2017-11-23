@@ -71,8 +71,10 @@ public class DefaultCluster extends AbstractCluster {
             case RPCConstants.PROVIDER_CATAGRAY:
                 Referer referer = RefererManager.create(url);
                 referers.add(referer);
+                break;
             default:
                 LoggerUtil.error("unknown catagray,Notify URL: " + url);
+                break;
         }
     }
 
