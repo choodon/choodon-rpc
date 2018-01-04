@@ -17,7 +17,7 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 @ChannelHandler.Sharable
-public class ClientHttpHandler extends AbstractClientHandler {
+public class HttpClientHandler extends AbstractClientHandler {
 
 
     @Override

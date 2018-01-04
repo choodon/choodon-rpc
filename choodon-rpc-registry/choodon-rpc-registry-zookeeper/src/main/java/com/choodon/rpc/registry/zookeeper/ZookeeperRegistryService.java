@@ -103,14 +103,14 @@ public class ZookeeperRegistryService extends AbtractRegistryService {
         }
         switch (catagray) {
             case RPCConstants.PROVIDER_CATAGRAY:
-                String providerPath = new StringBuilder().append("/" + url.getPath() + "/" + url.getParameter(URLParamType.group.getName(), URLParamType.group.getValue()) + "/" + url.getParameter(URLParamType.version.getName(), URLParamType.version.getValue())).append("/")
-                        .append(RPCConstants.PROVIDER_CATAGRAY).toString();
-                String path = new StringBuilder().append(providerPath).append("/").append(url.getHostPortStr())
-                        .toString();
+                String path = RPCConstants.SEPARATOR + url.getPath() +
+                        RPCConstants.SEPARATOR + RPCConstants.PROVIDER_CATAGRAY + RPCConstants.SEPARATOR + url.getParameter(URLParamType.group.getName(), URLParamType.group.getValue()) +
+                        RPCConstants.SEPARATOR + url.getParameter(URLParamType.version.getName(), URLParamType.version.getValue()) + RPCConstants.SEPARATOR
+                        + url.getHostPortStr() + RPCConstants.SEPARATOR + url.getParameter(URLParamType.transportProtocol.getName(), URLParamType.transportProtocol.getValue());
                 if (client.checkExists().forPath(path) == null) {
                     client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
                     client.setData().forPath(path, url.toFullStr().getBytes(Charset.defaultCharset()));
-                }else if (client.checkExists().forPath(path) != null) {
+                } else if (client.checkExists().forPath(path) != null) {
                     client.setData().forPath(path,
                             url.toFullStr().getBytes(Charset.defaultCharset()));
                 }
@@ -130,13 +130,10 @@ public class ZookeeperRegistryService extends AbtractRegistryService {
         }
         switch (catagray) {
             case RPCConstants.PROVIDER_CATAGRAY:
-                String providerPath = new StringBuilder().append(url.getPath()).append("/")
-                        .append(RPCConstants.PROVIDER_CATAGRAY).toString();
-                String path = new StringBuilder().append(providerPath).append("/").append(url.getHostPortStr())
-                        .toString();
-                if (client.checkExists().forPath(providerPath) == null) {
-                    return;
-                }
+                String path = RPCConstants.SEPARATOR + url.getPath() +
+                        RPCConstants.SEPARATOR + RPCConstants.PROVIDER_CATAGRAY + RPCConstants.SEPARATOR + url.getParameter(URLParamType.group.getName(), URLParamType.group.getValue()) +
+                        RPCConstants.SEPARATOR + url.getParameter(URLParamType.version.getName(), URLParamType.version.getValue()) + RPCConstants.SEPARATOR
+                        + url.getHostPortStr() + RPCConstants.SEPARATOR + url.getParameter(URLParamType.transportProtocol.getName(), URLParamType.transportProtocol.getValue());
                 if (client.checkExists().forPath(path) == null) {
                     return;
                 }
@@ -157,8 +154,9 @@ public class ZookeeperRegistryService extends AbtractRegistryService {
         }
         switch (catagray) {
             case RPCConstants.CONSUMER_CATAGRAY:
-                String path = new StringBuilder().append("/" + url.getPath()).append("/")
-                        .append(url.getParameter(URLParamType.version.getName(), URLParamType.version.getValue())).append("/").append(url.getParameter(URLParamType.group.getName(), URLParamType.group.getValue())).append("/").append(RPCConstants.PROVIDER_CATAGRAY).toString();
+                String path = RPCConstants.SEPARATOR + url.getPath() +
+                        RPCConstants.SEPARATOR + RPCConstants.PROVIDER_CATAGRAY + RPCConstants.SEPARATOR + url.getParameter(URLParamType.group.getName(), URLParamType.group.getValue()) +
+                        RPCConstants.SEPARATOR + url.getParameter(URLParamType.version.getName(), URLParamType.version.getValue());
                 if (client.checkExists().forPath(path) == null) {
                     return;
                 }
@@ -210,7 +208,8 @@ public class ZookeeperRegistryService extends AbtractRegistryService {
 
     @SuppressWarnings("unchecked")
     private URL pareseURL(PathChildrenCacheEvent event) throws Exception {
-        byte[] data = client.getData().forPath(event.getData().getPath());
+    	String path=event.getData().getPath();
+        byte[] data = client.getData().forPath(path+RPCConstants.SEPARATOR+client.getChildren().forPath(path).get(0));
         return URL.valueOf(new String(data, Charset.defaultCharset()));
     }
 

@@ -11,7 +11,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 public class TcpClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-    private static final ClientTCPHandler clientTCPHandler = new ClientTCPHandler();
+    private static final TcpClientHandler clientTCPHandler = new TcpClientHandler();
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {

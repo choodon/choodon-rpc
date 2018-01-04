@@ -6,13 +6,12 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
 
 public class Http1ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-    private static final ClientHttpHandler clientHttpHandler = new ClientHttpHandler();
+    private static final HttpClientHandler clientHttpHandler = new HttpClientHandler();
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {

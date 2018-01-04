@@ -15,7 +15,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
 @ChannelHandler.Sharable
-public class ClientTCPHandler extends AbstractClientHandler {
+public class TcpClientHandler extends AbstractClientHandler {
 
 
     @Override

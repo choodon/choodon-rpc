@@ -40,7 +40,6 @@ public class HttpNettyClient extends AbstractNettyClient {
     public RPCResponse send4SyncTypeCall(RPCRequest request) throws Exception {
         Channel channel = selectChannel();
         RPCContext.setRequest(request);
-        ByteBuf byteBuf = Unpooled.copiedBuffer(request.getBytes());
         DefaultFullHttpRequest httpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, "/", Unpooled.copiedBuffer(request.getBytes()));
         httpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, httpRequest.content().readableBytes());
         httpRequest.headers().set(RPCConstants.PROTOCOL_LENGTH, httpRequest.content().readableBytes());

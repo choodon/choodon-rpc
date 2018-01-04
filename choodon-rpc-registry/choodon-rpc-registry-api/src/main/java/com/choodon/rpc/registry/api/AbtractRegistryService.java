@@ -188,6 +188,7 @@ public abstract class AbtractRegistryService implements RegistryService {
             listenerContianer.put(URL, listener);
             doSubscribe(URL, listener);
         } catch (Exception e) {
+        	LoggerUtil.error("subscribe failure",e);
             failedSubscribeURLQueue.add(URL);
         }
     }

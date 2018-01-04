@@ -17,10 +17,10 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 @ChannelHandler.Sharable
-public class ServerHttpHandler extends AbstractServerHandler {
+public class HttpServerHandler extends AbstractServerHandler {
 
 
-    public ServerHttpHandler(URL protocolURL) {
+    public HttpServerHandler(URL protocolURL) {
         super(protocolURL);
     }
 
@@ -74,7 +74,6 @@ public class ServerHttpHandler extends AbstractServerHandler {
             }
         }
         ReferenceCountUtil.safeRelease(msg);
-
     }
 
 }

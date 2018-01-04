@@ -19,9 +19,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ChannelHandler.Sharable
-public class ServerTCPHandler extends AbstractServerHandler {
+public class TcpServerHandler extends AbstractServerHandler {
 
-    public ServerTCPHandler(URL protocolURL) {
+    public TcpServerHandler(URL protocolURL) {
         super(protocolURL);
     }
 

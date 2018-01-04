@@ -11,11 +11,11 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 public class TcpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
-    private static ServerTCPHandler serverTCPHandler;
+    private static TcpServerHandler serverTCPHandler;
 
     public TcpServerChannelInitializer(URL protocolURL) {
         if (serverTCPHandler == null) {
-            serverTCPHandler = new ServerTCPHandler(protocolURL);
+            serverTCPHandler = new TcpServerHandler(protocolURL);
         }
     }
 

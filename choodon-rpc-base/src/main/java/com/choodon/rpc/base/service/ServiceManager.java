@@ -110,13 +110,13 @@ public class ServiceManager {
         ServiceImpl serviceImpl = clazz.getAnnotation(ServiceImpl.class);
         String serviceId = serviceImpl.serviceId();
         if (serviceId == null) {
-            serviceId = interfaceClass.getCanonicalName();
-        }
+			serviceId = interfaceClass.getCanonicalName();
+		}
         Map<String, String> parameters = new HashMap<>();
         parameters.put(URLParamType.serviceId.getName(), serviceImpl.serviceId());
         parameters.put(URLParamType.group.getName(), serviceImpl.group());
         parameters.put(URLParamType.version.getName(), serviceImpl.version());
-        URL serviceURL = URLTools.createServiceURL(RPCConstants.SERVICE_PROTOCOL, serviceId, serviceImpl.version(), serviceImpl.group(), parameters);
+        URL serviceURL = URLTools.createServiceURL(RPCConstants.SERVICE_PROTOCOL, serviceId, serviceImpl.group(), serviceImpl.version(), parameters);
         globalServiceURLContainer.put(getServiceDes(entry).toString(), serviceURL);
         return serviceURL;
     }

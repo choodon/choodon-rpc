@@ -15,11 +15,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Http1ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static ServerHttpHandler serverHttpHandler;
+    private static HttpServerHandler serverHttpHandler;
 
     public Http1ServerChannelInitializer(URL protocolURL) {
         if (serverHttpHandler == null) {
-            serverHttpHandler = new ServerHttpHandler(protocolURL);
+            serverHttpHandler = new HttpServerHandler(protocolURL);
         }
 
     }
