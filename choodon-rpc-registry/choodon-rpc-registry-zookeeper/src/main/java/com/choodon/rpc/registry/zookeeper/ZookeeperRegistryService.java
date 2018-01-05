@@ -139,7 +139,6 @@ public class ZookeeperRegistryService extends AbtractRegistryService {
                 }
                 client.delete().guaranteed().forPath(path);
                 break;
-
             default:
                 break;
         }

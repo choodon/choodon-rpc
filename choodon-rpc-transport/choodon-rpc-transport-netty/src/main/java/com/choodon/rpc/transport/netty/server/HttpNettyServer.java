@@ -16,11 +16,11 @@ public class HttpNettyServer extends AbstractNettyServer {
     private ChannelFuture channelFuture;
 
     @Override
-    public void startup() {
-        if (isStarted) {
+    public synchronized void startup() {
+        if (isStarted.get()) {
             return;
         }
-        isStarted = true;
+
 //        serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
 //        serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
 //        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -29,7 +29,8 @@ public class HttpNettyServer extends AbstractNettyServer {
         serverBootstrap.childHandler(new Http1ServerChannelInitializer(protocolURL));
         try {
             channelFuture = serverBootstrap.bind(protocolURL.getPort()).sync();
-        } catch (InterruptedException e) {
+            isStarted.set(true);
+        } catch (Exception e) {
             LoggerUtil.error("server start exception", e);
             throw new RPCFrameworkException("server start exception");
         }

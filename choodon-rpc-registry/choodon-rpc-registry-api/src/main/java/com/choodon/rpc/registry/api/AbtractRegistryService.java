@@ -1,6 +1,6 @@
 package com.choodon.rpc.registry.api;
 
-import com.choodon.rpc.base.common.ConcurrentSet;
+import com.choodon.rpc.base.common.ConcurrentHashSet;
 import com.choodon.rpc.base.common.Pair;
 import com.choodon.rpc.base.common.URL;
 import com.choodon.rpc.base.log.LoggerUtil;
@@ -20,7 +20,7 @@ public abstract class AbtractRegistryService implements RegistryService {
     /**
      * 注册成功的服务
      */
-    protected final ConcurrentSet<URL> registryURLs = new ConcurrentSet<>();
+    protected final ConcurrentHashSet<URL> registryURLs = new ConcurrentHashSet<>();
     /**
      * 注册失败的服务
      */

@@ -21,20 +21,22 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceManager {
     private final static Map<String, List<URL>> packageServiceURLContainer = new HashMap<>();
     private final static Map<String, URL> globalServiceURLContainer = new HashMap<>();
-    private final static Map<Class, Class> class2InterfaceMapperContainer = new ConcurrentHashMap<>();
 
-    public static List<URL> get(String packageName) {
+    public static List<URL> getIfNullInit(String packageName) {
         if (packageServiceURLContainer.containsKey(packageName)) {
             return packageServiceURLContainer.get(packageName);
         } else {
-            packageServiceURLContainer.put(packageName, init(packageName));
+            init(packageName);
             return packageServiceURLContainer.get(packageName);
         }
+    }
 
+    public static List<URL> get(String packageName) {
+        return packageServiceURLContainer.get(packageName);
     }
 
 
-    private static List<URL> init(String packageName) throws RPCFrameworkException {
+    private static void init(String packageName) throws RPCFrameworkException {
         List<URL> serviceURLs = new LinkedList<>();
         Map<Class, Class> class2InterfaceMapperContainer = RPCServiceClassManager.getServiceClass2InterfaceMapperContainer(packageName);
         String handlerId;
@@ -52,8 +54,7 @@ public class ServiceManager {
             ServiceHandlerManager.setServiceHandled(entry.getKey().getCanonicalName());
             serviceURLs.add(createServiceURL(entry));
         }
-        return serviceURLs;
-
+        packageServiceURLContainer.put(packageName, serviceURLs);
     }
 
     public static void handle(Class<?> clazz) {
@@ -110,8 +111,8 @@ public class ServiceManager {
         ServiceImpl serviceImpl = clazz.getAnnotation(ServiceImpl.class);
         String serviceId = serviceImpl.serviceId();
         if (serviceId == null) {
-			serviceId = interfaceClass.getCanonicalName();
-		}
+            serviceId = interfaceClass.getCanonicalName();
+        }
         Map<String, String> parameters = new HashMap<>();
         parameters.put(URLParamType.serviceId.getName(), serviceImpl.serviceId());
         parameters.put(URLParamType.group.getName(), serviceImpl.group());

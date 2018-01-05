@@ -25,22 +25,23 @@ public class NettyServerFactory implements TransportServerFactory {
         } else {
             String transportProtocol = protocolURL.getParameter(URLParamType.transportProtocol.getName(), URLParamType.transportProtocol.getValue());
             if (transportProtocol.equalsIgnoreCase(RPCConstants.TCP)) {
-                TransportServer server = ExtensionLoader.getExtensionLoader(TransportServer.class)
+                TransportServer server;
+                TransportServer server0 = ExtensionLoader.getExtensionLoader(TransportServer.class)
                         .getExtension(RPCConstants.NETTY_TCP);
-                server = serverContainer.put(protocolKey, server);
+                server = serverContainer.putIfAbsent(protocolKey, server0);
                 if (server == null) {
-                    server = serverContainer.get(protocolKey);
+                    server = server0;
                 }
                 server.init(protocolURL);
                 server.startup();
                 return server;
             } else if (transportProtocol.equalsIgnoreCase(RPCConstants.HTTP)) {
-
-                TransportServer server = ExtensionLoader.getExtensionLoader(TransportServer.class)
+                TransportServer server;
+                TransportServer server0 = ExtensionLoader.getExtensionLoader(TransportServer.class)
                         .getExtension(RPCConstants.NETTY_HTTP);
-                server = serverContainer.put(protocolKey, server);
+                server = serverContainer.putIfAbsent(protocolKey, server0);
                 if (server == null) {
-                    server = serverContainer.get(protocolKey);
+                    server = server0;
                 }
                 server.init(protocolURL);
                 server.startup();

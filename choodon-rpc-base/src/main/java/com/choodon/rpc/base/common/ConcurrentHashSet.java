@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializable {
+public final class ConcurrentHashSet<E> extends AbstractSet<E> implements Serializable {
 
-	private static final long serialVersionUID = 5538484093098061308L;
+	private static final long serialVersionUID = 5568484093098961308L;
 
 	private final ConcurrentMap<E, Boolean> map;
 
-	public ConcurrentSet() {
+	public ConcurrentHashSet() {
 		map = new ConcurrentHashMap<>();
 	}
 
@@ -30,6 +30,8 @@ public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializab
 	public boolean add(E o) {
 		return map.putIfAbsent(o, Boolean.TRUE) == null;
 	}
+
+
 
 	@Override
 	public boolean remove(Object o) {

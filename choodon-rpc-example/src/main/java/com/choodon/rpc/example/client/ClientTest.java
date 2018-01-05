@@ -26,7 +26,7 @@ public class ClientTest {
         for (int i = 0; i < 1000000; i++) {
             try {
                 hello = helloWorldService.sayHello("xx");
-
+                System.out.println(hello);
             } catch (Exception e) {
                 e.printStackTrace();
             }

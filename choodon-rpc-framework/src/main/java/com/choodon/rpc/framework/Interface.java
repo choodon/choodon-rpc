@@ -23,6 +23,10 @@ public class Interface {
             URL interfaceURL, Class refInterface) {
         CopyOnWriteArrayList clusters = new CopyOnWriteArrayList();
         Cluster cluster;
+        if(interfaceURL==null){
+            interfaceURL=URL.valueOf("choodon://0.0.0.0:0000");
+            interfaceURL.setPath(refInterface.getName());
+        }
         for (URL protocolURL : protocolURLs) {
             for (URL registryURL : registryURLs) {
                 cluster = ClusterManager.createCluster(interfaceURL, protocolURL, registryURL);

@@ -20,10 +20,9 @@ public class TcpNettyServer extends AbstractNettyServer {
 
     @Override
     public void startup() {
-        if (isStarted) {
+        if (isStarted.get()) {
             return;
         }
-        isStarted = true;
         serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
         serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
         serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -32,7 +31,8 @@ public class TcpNettyServer extends AbstractNettyServer {
         serverBootstrap.childHandler(new TcpServerChannelInitializer(protocolURL));
         try {
             channelFuture = serverBootstrap.bind(protocolURL.getPort()).sync();
-        } catch (InterruptedException e) {
+            isStarted.set(true);
+        } catch (Exception e) {
             LoggerUtil.error("server start exception", e);
             throw new RPCFrameworkException("server start exception");
         }
@@ -41,6 +41,7 @@ public class TcpNettyServer extends AbstractNettyServer {
 
     @Override
     public void shutdwon() {
+
         channelFuture.channel().close();
     }
 
