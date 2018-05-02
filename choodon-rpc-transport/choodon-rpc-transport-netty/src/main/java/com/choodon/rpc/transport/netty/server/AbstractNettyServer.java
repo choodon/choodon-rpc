@@ -10,7 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractNettyServer implements TransportServer {
-    protected AtomicBoolean isStarted;
+    protected AtomicBoolean isStarted=new AtomicBoolean(false);
     protected URL protocolURL;
     protected ServerBootstrap serverBootstrap;
     protected static EventLoopGroup boss;
