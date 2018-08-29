@@ -43,7 +43,7 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Holder> {
 
     private void doEncodeRequest(RPCRequest request, ByteBuf out) {
         byte serializerCode = SerializationEnum.instance(request.getParameterValue(URLParamType.serialize.getName(), URLParamType.serialize.getName())).getCode();
-        out.writeShort(ProtocolHeader.PASS);
+        out.writeShort(Protocol.PASS);
         out.writeByte(MsgTypeEnum.REQUEST.getCode());
         out.writeCharSequence(request.getParameterValue(URLParamType.id.getName()), Charset.defaultCharset());
         out.writeByte(serializerCode);
@@ -55,7 +55,7 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Holder> {
 
     private void doEncodeResponse(RPCResponse response, ByteBuf out) {
         byte serializerCode = SerializationEnum.instance(response.getParameterValue(URLParamType.serialize.getName(), URLParamType.serialize.getName())).getCode();
-        out.writeShort(ProtocolHeader.PASS);
+        out.writeShort(Protocol.PASS);
         out.writeByte(MsgTypeEnum.RESPONSE.getCode());
         out.writeCharSequence(response.getParameterValue(URLParamType.id.getName()), Charset.defaultCharset());
         out.writeByte(response.getParameterByteValue(URLParamType.status.getName()));
@@ -67,13 +67,13 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Holder> {
     }
 
     private void doEncodeHeartBeatPing(HeartBeatPing heartBeatPing, ByteBuf out) {
-        out.writeShort(ProtocolHeader.PASS);
+        out.writeShort(Protocol.PASS);
         out.writeByte(MsgTypeEnum.HEARTBEAT_PING.getCode());
         out.writeCharSequence(heartBeatPing.getParameterValue(URLParamType.id.getName()), Charset.defaultCharset());
     }
 
     private void doEncodeHeartBeatPong(HeartBeatPong heartBeatPong, ByteBuf out) {
-        out.writeShort(ProtocolHeader.PASS);
+        out.writeShort(Protocol.PASS);
         out.writeByte(MsgTypeEnum.HEARTBEAT_PONG.getCode());
         out.writeCharSequence(heartBeatPong.getParameterValue(URLParamType.id.getName()), Charset.defaultCharset());
     }

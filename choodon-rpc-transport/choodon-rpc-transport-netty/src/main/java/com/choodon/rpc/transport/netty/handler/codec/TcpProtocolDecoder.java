@@ -20,7 +20,7 @@ public class TcpProtocolDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         short pass = in.readShort();
-        ProtocolHeader.checkPass(pass);
+        Protocol.checkPass(pass);
         byte msgTypeCode = in.readByte();
         MsgTypeEnum msgTypeEnum = MsgTypeEnum.instance(msgTypeCode);
         switch (msgTypeEnum) {
