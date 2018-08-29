@@ -3,10 +3,10 @@ package com.choodon.rpc.base.protocol;
 
 import com.choodon.rpc.base.common.RPCConstants;
 
-public class HeartBeatPong extends Response {
+public class HeartBeatPong extends Holder {
 
 
-    public HeartBeatPong(Long id) {
-        headers.put(RPCConstants.ID, String.valueOf(id));
+    public HeartBeatPong(String id) {
+        headers.put(RPCConstants.ID, id);
     }
 }

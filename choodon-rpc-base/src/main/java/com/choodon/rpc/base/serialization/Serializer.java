@@ -7,7 +7,7 @@ import com.choodon.rpc.base.extension.Spi;
 @Spi(scope = Scope.SINGLETON)
 public interface Serializer {
 
-	<T> byte[] writeObject(T obj);
+    <T> byte[] writeObject(T obj);
 
-	<T> T readObject(byte[] bytes, Class<T> clazz);
+    <T> T readObject(byte[] bytes, Class<T> clazz);
 }

@@ -3,30 +3,60 @@ package com.choodon.rpc.base.common;
 import com.choodon.rpc.base.util.SystemUtil;
 
 public enum URLParamType {
+    id("id", null),
+
+    headerLength("headerLength", null),
+    bodyLength("bodyLength", null),
+    status("status", "0"),
+
     haStrategy("haStrategy", RPCConstants.HA_STRATEGY_FAILOVER),
+
     loadBalance("loadBalance", RPCConstants.LOAD_BALANCE_ROUNDROBIN),
+
     cluster("cluster", RPCConstants.DEFAULT),
+
     serviceProtocol("serviceProtocol", RPCConstants.SERVICE_PROTOCOL),
+
     serviceId("serviceId", null),
+
     requestType("requestType", "sync"),
+
     timeOut("timeOut", "30000"),
+
     channelNum("channelNum", "10"),
+
     transportTool("transportTool", RPCConstants.NETTY),
+
     transportProtocol("transportProtocol", RPCConstants.TCP),
+
     transportHost("transportHost", "127.0.0.1"),
+
     transportPort("transportPort", "8080"),
+
     workThreadNum("workThreadNum", "100"),
+
     bossThreadNum("bossThreadNum", (SystemUtil.getProcessorCoreSize() * 2 + 1) + ""),
-    bussinessThreadNum("bussinessThreadNum", "500"),
+
+    businessThreadNum("businessThreadNum", "500"),
+
     registryRetryInterval("registryRetryInterval", "3000"),
+
     registrySessionTimeOut("registrySessionTimeOut", "6000"),
+
     registryTimeOut("registryTimeOut", "6000"),
-    registyConnecting("registyConnecting", null),
+
+    registryConnecting("registryConnecting", null),
+
     registry("registry", RPCConstants.ZOOKEEPER),
+
     serialize("serialization", RPCConstants.DEFAULT_SERIALIZATION),
+
     nodeType("nodeType", RPCConstants.NODE_TYPE_SERVICE),
+
     group("group", RPCConstants.DEFAULT_GROUP),
+
     serviceImplClassName("serviceImplClassName", null),
+
     version("version", RPCConstants.DEFAULT_VERSION);
 
 
@@ -52,6 +82,10 @@ public enum URLParamType {
 
     public int getIntValue() {
         return Integer.parseInt(value);
+    }
+
+    public int getByteValue() {
+        return Byte.parseByte(value);
     }
 
     public long getLongValue() {

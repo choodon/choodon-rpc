@@ -40,7 +40,7 @@ public class TcpNettyServer extends AbstractNettyServer {
     }
 
     @Override
-    public void shutdwon() {
+    public void shutdown() {
 
         channelFuture.channel().close();
     }

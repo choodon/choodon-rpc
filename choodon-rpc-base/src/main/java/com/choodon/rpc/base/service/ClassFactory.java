@@ -11,8 +11,6 @@ import java.lang.reflect.Method;
 public class ClassFactory {
 
 
-
-
     public static ServiceHandler getServiceHandler(Class<?> clazz, Method method) {
 
         try {

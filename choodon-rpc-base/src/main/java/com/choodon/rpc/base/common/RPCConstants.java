@@ -2,6 +2,7 @@ package com.choodon.rpc.base.common;
 
 public class RPCConstants {
     public static final String SERVICE_KEY = "serviceKey";
+    public static final String STATUS = "status";
     public static final String CLUSTER_KEY = "clusterKey";
     public static final String SERVICE_HAND_ID = "handId";
     public static final String SERVICE_PROTOCOL = "choodon";
@@ -16,9 +17,9 @@ public class RPCConstants {
     public static final String NODE_TYPE_SERVICE = "service";
     public static final String DEFAULT = "default";
     public static final String DEFAULT_CHARACTER = "utf-8";
-    public static final String CATAGRAY = "catagray";
-    public static final String PROVIDER_CATAGRAY = "provider";
-    public static final String CONSUMER_CATAGRAY = "consumer";
+    public static final String CATEGORY = "category";
+    public static final String PROVIDER_CATEGORY = "provider";
+    public static final String CONSUMER_CATEGORY = "consumer";
     public static final String PROTOSTUFF = "protostuff";
     public static final String KRYO = "kryo";
     public static final String FASTJSON = "fastjson";
@@ -51,6 +52,9 @@ public class RPCConstants {
     public static final String MESSAGE_TYPE_PING = "ping";
     public static final String MESSAGE_TYPE_PONG = "pong";
     public static final String HTTP_KEEP_ALIVE = "keep-alive";
+
+    public static final String HEADER_LENGTH = "headerLength";
+    public static final String BODY_LENGTH = "bodyLength";
 
 
 }

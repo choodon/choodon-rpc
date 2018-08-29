@@ -65,7 +65,7 @@ public abstract class AbstractNettyClient implements TransportClient {
     }
 
     @Override
-    public void shutdwon() {
+    public void shutdown() {
         for (Channel channel : channels) {
             channel.close().addListener(new ChannelFutureListener() {
                 @Override

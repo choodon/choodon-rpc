@@ -17,7 +17,7 @@ public class AtomicPositiveLong extends Number {
     }
 
     public final long getAndIncrement() {
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current >= Long.MAX_VALUE ? 0 : current + 1);
             if (i.compareAndSet(current, next)) {
@@ -27,7 +27,7 @@ public class AtomicPositiveLong extends Number {
     }
 
     public final long getAndDecrement() {
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current <= 0 ? Long.MAX_VALUE : current - 1);
             if (i.compareAndSet(current, next)) {
@@ -37,7 +37,7 @@ public class AtomicPositiveLong extends Number {
     }
 
     public final long incrementAndGet() {
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current >= Long.MAX_VALUE ? 0 : current + 1);
             if (i.compareAndSet(current, next)) {
@@ -47,7 +47,7 @@ public class AtomicPositiveLong extends Number {
     }
 
     public final long decrementAndGet() {
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current <= 0 ? Long.MAX_VALUE : current - 1);
             if (i.compareAndSet(current, next)) {
@@ -78,7 +78,7 @@ public class AtomicPositiveLong extends Number {
         if (delta < 0) {
             throw new IllegalArgumentException("delta " + delta + " < 0");
         }
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current >= Long.MAX_VALUE - delta + 1 ? delta - 1 : current + delta);
             if (i.compareAndSet(current, next)) {
@@ -91,7 +91,7 @@ public class AtomicPositiveLong extends Number {
         if (delta < 0) {
             throw new IllegalArgumentException("delta " + delta + " < 0");
         }
-        for (; ; ) {
+        while (true) {
             long current = i.get();
             long next = (current >= Long.MAX_VALUE - delta + 1 ? delta - 1 : current + delta);
             if (i.compareAndSet(current, next)) {

@@ -37,7 +37,7 @@ public class HttpNettyServer extends AbstractNettyServer {
     }
 
     @Override
-    public void shutdwon() {
+    public void shutdown() {
         channelFuture.channel().close();
     }
 }

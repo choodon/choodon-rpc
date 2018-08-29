@@ -6,6 +6,8 @@ import com.choodon.rpc.transport.netty.handler.codec.TcpProtocolEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,8 @@ public class TcpServerChannelInitializer extends ChannelInitializer<SocketChanne
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline channelPipeline = channel.pipeline();
+        channelPipeline.addLast(new LengthFieldPrepender(4));
+        channelPipeline.addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4));
         channelPipeline.addLast(new TcpProtocolDecoder());
         channelPipeline.addLast(new TcpProtocolEncoder());
         channelPipeline.addLast(new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS));

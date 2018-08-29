@@ -10,14 +10,14 @@ import com.choodon.rpc.base.serialization.Serializer;
 @SpiMeta(name = RPCConstants.DEFAULT_SERIALIZATION)
 public class FastjsonSerializer implements Serializer {
 
-	@Override
-	public <T> byte[] writeObject(T obj) {
-		return JSON.toJSONBytes(obj, SerializerFeature.SortField);
-	}
+    @Override
+    public <T> byte[] writeObject(T obj) {
+        return JSON.toJSONBytes(obj, SerializerFeature.SortField);
+    }
 
-	@Override
-	public <T> T readObject(byte[] bytes, Class<T> clazz) {
-		return JSON.parseObject(bytes, clazz, Feature.SortFeidFastMatch);
-	}
+    @Override
+    public <T> T readObject(byte[] bytes, Class<T> clazz) {
+        return JSON.parseObject(bytes, clazz, Feature.SortFeidFastMatch);
+    }
 
 }

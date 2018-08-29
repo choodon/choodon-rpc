@@ -121,7 +121,7 @@ public class ExporterContext {
         TransportServerFactory serverFactory = ExtensionLoader.getExtensionLoader(TransportServerFactory.class)
                 .getExtension(protocolURL.getParameter(URLParamType.transportTool.getName(), URLParamType.transportTool.getValue()));
         TransportServer server = serverFactory.createServer(protocolURL);
-        server.shutdwon();
+        server.shutdown();
         LoggerUtil.info("Server :{} shut down successfully.", protocolURL);
     }
 }
