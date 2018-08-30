@@ -3,10 +3,8 @@ package com.choodon.rpc.transport.netty.handler;
 import com.choodon.rpc.base.common.RPCConstants;
 import com.choodon.rpc.base.common.URL;
 import com.choodon.rpc.base.common.URLParamType;
-import com.choodon.rpc.base.protocol.HeartBeatPing;
 import com.choodon.rpc.base.protocol.RPCRequest;
-import com.choodon.rpc.base.protocol.Request;
-import com.choodon.rpc.transport.netty.common.RequestHandleTask;
+import com.choodon.rpc.transport.netty.common.RPCRequestHandleTask;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -37,10 +35,10 @@ public class HttpServerHandler extends AbstractServerHandler {
             Boolean keepAlive = HttpUtil.isKeepAlive(httpRequest);
             ByteBuf byteBuf = httpRequest.content();
             int length = byteBuf.readableBytes();
-            Request request = null;
+            RPCRequest request = null;
             if (type.equalsIgnoreCase(RPCConstants.MESSAGE_TYPE_REQUEST)) {
                 request = new RPCRequest(Long.parseLong(id));
-                request.setSerializer(serializationName);
+                request.addParameter(URLParamType.serialize.getName(),serializationName);
                 request.addParameter(URLParamType.transportProtocol.getName(), RPCConstants.HTTP);
                 request.addParameter(RPCConstants.MESSAGE_TYPE, RPCConstants.MESSAGE_TYPE_REQUEST);
                 request.addParameter(RPCConstants.HTTP_KEEP_ALIVE, keepAlive.toString());
@@ -48,13 +46,13 @@ public class HttpServerHandler extends AbstractServerHandler {
                 byteBuf.readBytes(content);
                 request.setBytes(content);
             } else if (type.equalsIgnoreCase(RPCConstants.MESSAGE_TYPE_PING)) {
-                request = new HeartBeatPing(Long.parseLong(id));
+//                request = new HeartBeatPing(id);
                 request.addParameter(RPCConstants.HTTP_KEEP_ALIVE, keepAlive.toString());
                 request.addParameter(URLParamType.transportProtocol.getName(), RPCConstants.HTTP);
                 request.addParameter(RPCConstants.MESSAGE_TYPE, RPCConstants.MESSAGE_TYPE_PING);
             }
             if (length == Integer.parseInt(protocolLength)) {
-                RequestHandleTask task = new RequestHandleTask(request, ctx);
+                RPCRequestHandleTask task = new RPCRequestHandleTask(request, ctx);
                 if (null == executorService) {
                     new Thread(task).start();
                 } else {

@@ -23,7 +23,7 @@ public class AbstractServerHandler extends ChannelInboundHandlerAdapter {
 
     public AbstractServerHandler(URL protocolURL) {
         if (executorService == null) {
-            executorService = Executors.newFixedThreadPool(protocolURL.getIntParameter(URLParamType.bussinessThreadNum.getName(), URLParamType.bussinessThreadNum.getIntValue()));
+            executorService = Executors.newFixedThreadPool(protocolURL.getIntParameter(URLParamType.businessThreadNum.getName(), URLParamType.businessThreadNum.getIntValue()));
         }
     }
 

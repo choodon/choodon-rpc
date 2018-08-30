@@ -57,6 +57,8 @@ public enum URLParamType {
 
     serviceImplClassName("serviceImplClassName", null),
 
+    methodId("methodId", null),
+
     version("version", RPCConstants.DEFAULT_VERSION);
 
 

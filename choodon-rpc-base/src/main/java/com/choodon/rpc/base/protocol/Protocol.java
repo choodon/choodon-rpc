@@ -7,7 +7,7 @@ import io.netty.util.Signal;
 public class Protocol {
 
     /**
-     * PASS通行证
+     * passport
      */
     public static final short PASS = (short) 0xcd;
 

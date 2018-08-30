@@ -3,6 +3,8 @@ package com.choodon.rpc.transport.netty.handler;
 import com.choodon.rpc.base.RPCContext;
 import com.choodon.rpc.base.common.RPCConstants;
 import com.choodon.rpc.base.common.URLParamType;
+import com.choodon.rpc.base.enums.MsgTypeEnum;
+import com.choodon.rpc.base.exception.RPCFrameworkException;
 import com.choodon.rpc.base.exception.RPCTimeOutException;
 import com.choodon.rpc.base.extension.ExtensionLoader;
 import com.choodon.rpc.base.log.LoggerUtil;
@@ -21,6 +23,15 @@ public class TcpClientHandler extends AbstractClientHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
+        MsgTypeEnum msgTypeEnum = MsgTypeEnum.instance(msg.getClass());
+        switch (msgTypeEnum) {
+            case RESPONSE:
+                break;
+            case HEARTBEAT_PONG:
+                break;
+                default:
+                    throw new RPCFrameworkException("Illegal msg type class");
+        }
         if (msg instanceof RPCResponse) {
             RPCContext.receviceResponse((Response) msg);
         } else if (msg instanceof HeartBeatPong) {

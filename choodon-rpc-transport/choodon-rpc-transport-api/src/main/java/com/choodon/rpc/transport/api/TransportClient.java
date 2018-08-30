@@ -4,6 +4,8 @@ import com.choodon.rpc.base.RPCCallback;
 import com.choodon.rpc.base.RPCFuture;
 import com.choodon.rpc.base.extension.Scope;
 import com.choodon.rpc.base.extension.Spi;
+import com.choodon.rpc.base.protocol.HeartBeatPing;
+import com.choodon.rpc.base.protocol.HeartBeatPong;
 import com.choodon.rpc.base.protocol.RPCRequest;
 import com.choodon.rpc.base.protocol.RPCResponse;
 
@@ -11,6 +13,8 @@ import com.choodon.rpc.base.protocol.RPCResponse;
 public interface TransportClient extends TransportService {
 
     RPCResponse send4SyncTypeCall(RPCRequest request) throws Exception;
+
+    HeartBeatPong send4SyncTypeCall(HeartBeatPing heartBeatPing) throws Exception;
 
     RPCFuture send4FutureTypeCall(RPCRequest request) throws Exception;
 

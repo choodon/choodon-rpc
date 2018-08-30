@@ -1,33 +1,43 @@
 package com.choodon.rpc.base;
 
-import com.choodon.rpc.base.common.DataArea;
 import com.choodon.rpc.base.common.RPCConstants;
 import com.choodon.rpc.base.common.URLParamType;
 import com.choodon.rpc.base.exception.RPCFrameworkException;
 import com.choodon.rpc.base.exception.RPCTimeOutException;
 import com.choodon.rpc.base.extension.ExtensionLoader;
 import com.choodon.rpc.base.log.LoggerUtil;
+import com.choodon.rpc.base.protocol.HeartBeatPing;
+import com.choodon.rpc.base.protocol.HeartBeatPong;
+import com.choodon.rpc.base.protocol.RPCRequest;
 import com.choodon.rpc.base.protocol.RPCResponse;
-import com.choodon.rpc.base.protocol.Request;
-import com.choodon.rpc.base.protocol.Response;
 import com.choodon.rpc.base.serialization.Serializer;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class RPCContext {
 
-    private static ThreadLocal<Request> requestHolder = new ThreadLocal();
-    private static ThreadLocal<Response> responseHolder = new ThreadLocal();
-    private static ConcurrentHashMap<Long, Response> responsesContainer = new ConcurrentHashMap<>();
-    private static ConcurrentHashMap<Long, CountDownLatch> countDownLatchContainer = new ConcurrentHashMap<>();
+    private static ThreadLocal<RPCRequest> requestHolder = new ThreadLocal();
+    private static ThreadLocal<RPCResponse> responseHolder = new ThreadLocal();
+    private static ConcurrentHashMap<String, RPCResponse> responsesContainer = new ConcurrentHashMap<>();
+    private static ThreadLocal<HeartBeatPing> heartBeatPingHolder = new ThreadLocal();
+    private static ThreadLocal<HeartBeatPong> heartBeatPongHolder = new ThreadLocal();
+    private static ConcurrentHashMap<String, HeartBeatPong> heartBeatPongContainer = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, CountDownLatch> countDownLatchContainer = new ConcurrentHashMap<>();
 
-    public static void setRequest(Request request) {
+    public static void setRequest(RPCRequest request) {
         requestHolder.set(request);
     }
 
-    public static Request getRequest() {
+    public static void setHeartBeatPing(HeartBeatPing heartBeatPing) {
+        heartBeatPingHolder.set(heartBeatPing);
+    }
+
+    public static RPCRequest getRequest() {
         return requestHolder.get();
     }
 
@@ -35,11 +45,11 @@ public class RPCContext {
         requestHolder.remove();
     }
 
-    public static void setResponse(Response response) {
+    public static void setResponse(RPCResponse response) {
         responseHolder.set(response);
     }
 
-    public static Response getResponse() {
+    public static RPCResponse getResponse() {
         return responseHolder.get();
     }
 
@@ -47,16 +57,16 @@ public class RPCContext {
         responseHolder.remove();
     }
 
-    public static long getRequestId() {
+    public static String getId() {
         return requestHolder.get().getId();
     }
 
-    public static long getResponseId() {
+    public static String getResponseId() {
         return responseHolder.get().getId();
     }
 
 
-    public static void addResponse(Long key, Response response) {
+    public static void addResponse(String key, RPCResponse response) {
         responsesContainer.put(key, response);
     }
 
@@ -64,9 +74,9 @@ public class RPCContext {
         responsesContainer.remove(key);
     }
 
-    public static Response syncGet() {
+    public static RPCResponse syncGet() {
         long timeOut = getRequest().getParameterLongValue(URLParamType.timeOut.getName(), URLParamType.timeOut.getLongValue());
-        long id = getRequestId();
+        String id = getId();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         countDownLatchContainer.put(id, countDownLatch);
         boolean success = false;
@@ -87,20 +97,17 @@ public class RPCContext {
 
     }
 
-    public static void receviceResponse(Response response) {
-        if (response instanceof RPCResponse) {
-            String serializationType = response.getSerializer();
-            Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(serializationType);
-            DataArea dataArea = serializer.readObject(response.getBytes(), DataArea.class);
-            response.setData(dataArea.getArgs()[0]);
-            response.addParameters(dataArea.getHeader());
-        }
+    public static void receiveResponse(RPCResponse response) throws IOException {
+        String serializationType = response.getParameterValue(URLParamType.serialize.getName());
+        Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension(serializationType);
+        Map<String, String> header = serializer.deserialize(response.getHeaderBytes(), HashMap.class);
+        response.setHeaders(header);
         String requestType = response.getParameterValue(URLParamType.requestType.getName(), URLParamType.requestType.getValue());
         if (requestType.equalsIgnoreCase(RPCConstants.CALL_TYPE_SYNC)) {
-            long id = response.getId();
-            if(countDownLatchContainer.containsKey(id)){
+            String id = response.getId();
+            if (countDownLatchContainer.containsKey(id)) {
                 responsesContainer.put(id, response);
-            }else{
+            } else {
                 return;
             }
             countDownLatchContainer.get(id).countDown();
@@ -112,17 +119,17 @@ public class RPCContext {
         }
     }
 
-    public static Response get(Request request) {
-        long id = request.getId();
+    public static RPCResponse get(RPCRequest request) {
+        String id = request.getId();
         long timeOut = request.getParameterLongValue(URLParamType.timeOut.getName(), URLParamType.timeOut.getLongValue());
         return get(id, timeOut);
     }
 
-    public static Response getResponse(long id) {
+    public static RPCResponse getResponse(String id) {
         return responsesContainer.get(id);
     }
 
-    public static Response get(long id, long timeOut) {
+    public static RPCResponse get(String id, long timeOut) {
         if (null != responsesContainer.get(id)) {
             return responsesContainer.remove(id);
         } else {

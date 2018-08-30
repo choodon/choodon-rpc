@@ -60,7 +60,7 @@ public class URLTools {
         serviceURL.addParameters(protocolURL.getParameters());
         serviceURL.addParameter(URLParamType.transportTool.getName(), protocolURL.getParameter(URLParamType.transportTool.getName(), URLParamType.transportTool.getValue()));
         serviceURL.addParameter(URLParamType.transportProtocol.getName(), protocolURL.getParameter(URLParamType.transportProtocol.getName(), URLParamType.transportProtocol.getValue()));
-        serviceURL.addParameter(RPCConstants.CATAGRAY, RPCConstants.PROVIDER_CATAGRAY);
+        serviceURL.addParameter(RPCConstants.CATEGORY, RPCConstants.PROVIDER_CATEGORY);
         return serviceURL;
     }
 
@@ -68,7 +68,7 @@ public class URLTools {
         serviceURL.setHost(protocolURL.getHost());
         serviceURL.setPort(protocolURL.getPort());
         serviceURL.addParameters(protocolURL.getParameters());
-        serviceURL.addParameter(RPCConstants.CATAGRAY, RPCConstants.CONSUMER_CATAGRAY);
+        serviceURL.addParameter(RPCConstants.CATEGORY, RPCConstants.CONSUMER_CATEGORY);
         return serviceURL;
     }
 
@@ -77,7 +77,7 @@ public class URLTools {
     }
 
     public static String getRegistryKey(URL registryURL) {
-        return registryURL.getProtocol() + "://0.0.0.0:0000/" + registryURL.getParameter(URLParamType.registyConnecting.getName());
+        return registryURL.getProtocol() + "://0.0.0.0:0000/" + registryURL.getParameter(URLParamType.registryConnecting.getName());
     }
 
     public static String getServiceKey(URL serviceURL) {

@@ -6,6 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public interface RPCCallback {
-    Map<Long, RPCCallback> callbackContainer = new ConcurrentHashMap<>();
+    Map<String, RPCCallback> callbackContainer = new ConcurrentHashMap<>();
     void callback(RPCResponse response);
 }

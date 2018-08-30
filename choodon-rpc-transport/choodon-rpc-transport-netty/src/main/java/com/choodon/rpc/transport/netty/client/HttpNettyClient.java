@@ -8,14 +8,13 @@ import com.choodon.rpc.base.common.URLParamType;
 import com.choodon.rpc.base.extension.SpiMeta;
 import com.choodon.rpc.base.protocol.RPCRequest;
 import com.choodon.rpc.base.protocol.RPCResponse;
-import com.choodon.rpc.base.protocol.Response;
 import com.choodon.rpc.transport.netty.handler.Http1ClientChannelInitializer;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelOption;
-import io.netty.handler.codec.http.*;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
 
 @SpiMeta(name = RPCConstants.NETTY_HTTP)
 public class HttpNettyClient extends AbstractNettyClient {
@@ -45,9 +44,9 @@ public class HttpNettyClient extends AbstractNettyClient {
         httpRequest.headers().set(RPCConstants.PROTOCOL_LENGTH, httpRequest.content().readableBytes());
         httpRequest.headers().set(RPCConstants.ID, request.getId());
         httpRequest.headers().set(RPCConstants.MESSAGE_TYPE, RPCConstants.MESSAGE_TYPE_REQUEST);
-        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getSerializer());
+        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getParameterValue(URLParamType.serialize.getName(), URLParamType.serialize.getValue()));
         channel.writeAndFlush(httpRequest);
-        Response response = RPCContext.syncGet();
+        RPCResponse response = RPCContext.syncGet();
         RPCContext.removeRequest();
         return (RPCResponse) response;
     }
@@ -61,7 +60,7 @@ public class HttpNettyClient extends AbstractNettyClient {
         httpRequest.headers().set(RPCConstants.PROTOCOL_LENGTH, httpRequest.content().readableBytes());
         httpRequest.headers().set(RPCConstants.ID, request.getId());
         httpRequest.headers().set(RPCConstants.MESSAGE_TYPE, RPCConstants.MESSAGE_TYPE_REQUEST);
-        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getSerializer());
+        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getParameterValue(URLParamType.serialize.getName(), URLParamType.serialize.getValue()));
         channel.writeAndFlush(httpRequest);
         return RPCFuture.create();
     }
@@ -75,7 +74,7 @@ public class HttpNettyClient extends AbstractNettyClient {
         httpRequest.headers().set(RPCConstants.PROTOCOL_LENGTH, httpRequest.content().readableBytes());
         httpRequest.headers().set(RPCConstants.ID, request.getId());
         httpRequest.headers().set(RPCConstants.MESSAGE_TYPE, RPCConstants.MESSAGE_TYPE_REQUEST);
-        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getSerializer());
+        httpRequest.headers().set(RPCConstants.SERIALIZER, request.getParameterValue(URLParamType.serialize.getName(), URLParamType.serialize.getValue()));
         channel.writeAndFlush(httpRequest);
         RPCCallback.callbackContainer.put(request.getId(), callback);
     }

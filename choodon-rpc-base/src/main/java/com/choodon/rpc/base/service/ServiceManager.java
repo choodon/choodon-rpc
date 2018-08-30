@@ -21,6 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceManager {
     private final static Map<String, List<URL>> packageServiceURLContainer = new HashMap<>();
     private final static Map<String, URL> globalServiceURLContainer = new HashMap<>();
+    private final static Map<String, Method> methodContainer = new HashMap<>();
+
+    public static Method getMethod(String methodId) {
+        return methodContainer.get(methodId);
+    }
 
     public static List<URL> getIfNullInit(String packageName) {
         if (packageServiceURLContainer.containsKey(packageName)) {

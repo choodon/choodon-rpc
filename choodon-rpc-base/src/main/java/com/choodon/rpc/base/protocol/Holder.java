@@ -1,6 +1,6 @@
 package com.choodon.rpc.base.protocol;
 
-import com.choodon.rpc.base.common.RPCConstants;
+import com.choodon.rpc.base.common.URLParamType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,12 +52,12 @@ public class Holder {
         this.attachments = attachments;
     }
 
-    public long getId() {
-        return getParameterLongValue(RPCConstants.ID);
+    public String getId() {
+        return getParameterValue(URLParamType.id.getName());
     }
 
-    public void addParameter(String key, String value) {
-        headers.put(key, value);
+    public void addParameter(String key, Object value) {
+        headers.put(key, value.toString());
     }
 
     public void addParameters(Map<String, String> parameters) {

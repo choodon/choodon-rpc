@@ -2,10 +2,10 @@ package com.choodon.rpc.transport.netty.handler;
 
 import com.choodon.rpc.base.RPCContext;
 import com.choodon.rpc.base.common.RPCConstants;
+import com.choodon.rpc.base.common.URLParamType;
 import com.choodon.rpc.base.log.LoggerUtil;
 import com.choodon.rpc.base.protocol.HeartBeatPing;
 import com.choodon.rpc.base.protocol.RPCResponse;
-import com.choodon.rpc.base.protocol.Response;
 import com.choodon.rpc.base.util.NetUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -31,10 +31,10 @@ public class HttpClientHandler extends AbstractClientHandler {
             String type = httpHeaders.get(RPCConstants.MESSAGE_TYPE);
             ByteBuf byteBuf = httpResponse.content();
             int length = byteBuf.readableBytes();
-            Response response = null;
+            RPCResponse response = null;
             if (type.equalsIgnoreCase(RPCConstants.MESSAGE_TYPE_RESPONSE)) {
-                response = new RPCResponse(Long.parseLong(id));
-                response.setSerializer(serializationName);
+                response = new RPCResponse(id);
+                response.addParameter(URLParamType.serialize.getName(), serializationName);
                 byte[] content = new byte[length];
                 byteBuf.readBytes(content);
                 response.setBytes(content);
@@ -44,7 +44,7 @@ public class HttpClientHandler extends AbstractClientHandler {
                 LoggerUtil.info(client_Server + " receive  heartbeat pong");
             }
             if (length == Integer.parseInt(protocolLength)) {
-                RPCContext.receviceResponse(response);
+                RPCContext.receiveResponse(response);
             } else {
                 LoggerUtil.error("PROTOCOL LENGTH ERROR");
             }
@@ -56,7 +56,7 @@ public class HttpClientHandler extends AbstractClientHandler {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             HeartBeatPing request = new HeartBeatPing();
-            RPCContext.setRequest(request);
+//            RPCContext.setRequest(request);
             DefaultFullHttpRequest httpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, "/", Unpooled.copiedBuffer("HeartBeat Ping", CharsetUtil.UTF_8));
             httpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, httpRequest.content().readableBytes());
             httpRequest.headers().set(RPCConstants.PROTOCOL_LENGTH, httpRequest.content().readableBytes());

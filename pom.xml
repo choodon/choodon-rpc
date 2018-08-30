@@ -23,6 +23,7 @@
         <netty-all>4.1.9.Final</netty-all>
         <guava>19.0</guava>
         <slf4j-log4j12>1.7.6</slf4j-log4j12>
+        <hessian>4.0.51</hessian>
     </properties>
     <modules>
         <module>choodon-rpc-base</module>
@@ -78,6 +79,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>${hessian}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson}</version>
@@ -99,6 +106,7 @@
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff-runtime}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>io.netty</groupId>
