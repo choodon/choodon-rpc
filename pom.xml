@@ -20,7 +20,7 @@
         <kryo>2.24.0</kryo>
         <protostuff-core>1.5.3</protostuff-core>
         <protostuff-runtime>1.5.3</protostuff-runtime>
-        <netty-all>4.1.9.Final</netty-all>
+        <netty-all>4.1.42.Final</netty-all>
         <guava>19.0</guava>
         <slf4j-log4j12>1.7.6</slf4j-log4j12>
     </properties>
