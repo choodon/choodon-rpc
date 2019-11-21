@@ -16,7 +16,7 @@
         <log4j-core>2.7</log4j-core>
         <curator-framework>2.12.0</curator-framework>
         <curator-recipes>2.12.0</curator-recipes>
-        <fastjson>1.2.24</fastjson>
+        <fastjson>1.2.25</fastjson>
         <kryo>2.24.0</kryo>
         <protostuff-core>1.5.3</protostuff-core>
         <protostuff-runtime>1.5.3</protostuff-runtime>
