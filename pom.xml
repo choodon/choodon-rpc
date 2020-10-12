@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit>4.12</junit>
+        <junit>4.13.1</junit>
         <commons-lang3>3.5</commons-lang3>
         <log4j-api>2.7</log4j-api>
         <log4j-core>2.7</log4j-core>
